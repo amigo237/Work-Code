@@ -49,6 +49,11 @@
 			return this;
 		};
 	};
-
-	window["Logger"] = window.Logger || Logger;
+	
+	if(window.Logger) {
+		throw new Error("Logger.js: Logger has been defined in other place");
+	}
+	else {
+		window["Logger"] =  Logger;
+	}
 })(window);
