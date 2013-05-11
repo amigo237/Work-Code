@@ -25,14 +25,6 @@
 		return s;
 	}
 	
-	function converted(s) {
-		if (s.indexOf('"') === 0) {
-			// This is a quoted cookie as according to RFC2068, unescape
-			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
-		return s;
-	}
-	
 	function extend( des, src ) {
 		if( typeof src === "object" ) {
 			des = ( des === null || typeof des === "undefined" ) ? {} : des;
@@ -88,12 +80,12 @@
 				var cookie = decode(parts.join('='));
 
 				if (key && key === name) {
-					result = converted(cookie);
+					result = cookie;
 					break;
 				}
 
 				if (!key) {
-					result[name] = converted(cookie);
+					result[name] = cookie;
 				}
 			}
 
