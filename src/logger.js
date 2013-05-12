@@ -1,7 +1,7 @@
-﻿(function(window){
+﻿(function(window) {
 	var console = window.console;
 	
-	var Logger = new function(){
+	var Logger = new function() {
 		this.isDebug = false;
 
 		this.log = function() {
