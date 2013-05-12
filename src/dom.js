@@ -45,7 +45,7 @@
 				y: rect.top + this.scrollTop()
 			}
 
-			var viewport = {
+			var fold = {
 				x: 0,
 				y: 0
 			}
@@ -55,23 +55,23 @@
 			if( container === document.body ) {
 				viewportWidth = this.viewportWidth();
 				viewportHeight = this.viewportHeight();
-				viewport.x += this.scrollLeft() + viewportWidth;
-				viewport.y += this.scrollTop() + viewportHeight;
+				fold.x += this.scrollLeft() + viewportWidth;
+				fold.y += this.scrollTop() + viewportHeight;
 			} 
 			else {
 				viewportWidth = this.viewportWidth(container);
 				viewportHeight = this.viewportHeight(container);
 				var containerRect = container.getBoundingClientRect();
-				viewport.x += this.scrollLeft() + viewportWidth + containerRect.left;
-				viewport.y += this.scrollTop() + viewportHeight + containerRect.top;
+				fold.x += this.scrollLeft() + viewportWidth + containerRect.left;
+				fold.y += this.scrollTop() + viewportHeight + containerRect.top;
 			}
 			//Logger.log("元素距离页面顶部的距离：" + pos.y);
 			//Logger.log("元素距离页面顶部的距离加上元素的高度：" + (pos.y + elem.clientHeight));
-			//Logger.log("容器距离页面顶部的距离：" + viewport.y);
-			//Logger.log(viewport);
+			//Logger.log("容器距离页面顶部的距离：" + fold.y);
+			//Logger.log(fold);
 			//Logger.log(this.scrollTop());
 
-			return ( pos.y + threshold ) <= viewport.y && ( pos.y + elem.clientHeight - threshold) >= ( viewport.y - viewportHeight ) && ( pos.x + threshold ) <= viewport.x && ( pos.x + elem.clientWidth - threshold ) >= ( viewport.x - viewportWidth );
+			return ( pos.y + threshold ) <= fold.y && ( pos.y + elem.clientHeight - threshold) >= ( fold.y - viewportHeight ) && ( pos.x + threshold ) <= fold.x && ( pos.x + elem.clientWidth - threshold ) >= ( fold.x - viewportWidth );
 		},
 
 		bind: function( elem, type, callback ) {
