@@ -1,0 +1,18 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<title>URL test</title>
+</head>
+<body>
+<script type="text/javascript" src="logger.js"></script>
+<script type="text/javascript" src="url.js"></script>
+<script type="text/javascript">
+	Logger.isDebug = true;
+	var obj = URLParser("http://rob:abcd1234@www.example.com/path/index.html?query1=test&silly=willy#test=hash&chucky=cheese");
+	Logger.log(obj);
+</script>
+</body>
+</html>
