@@ -4,6 +4,60 @@
 			return document.getElementById(id);
 		},
 
+		firstElementChild: function( el ) {
+			var element = el.firstElementChild,
+				childNodes = el.childNodes,
+				length = childNodes.length;
+			
+			for( var i = 0; i < length && !element; i++ ) {
+				element = (childNodes[i].nodeType === 1) ? childNodes[i] : null;
+			}
+			
+			return element;
+			// children非w3c标准，所以这里不采用
+			// return el.firstElementChild || el.children[0];
+		},
+		
+		lastElementChild: function( el ) {
+			var element = el.lastElementChild,
+				childNodes = el.childNodes,
+				length = childNodes.length;
+			
+			for( var i = length - 1; i > 0 && !element; i-- ) {
+				element = (childNodes[i].nodeType === 1) ? childNodes[i] : null;
+			}
+			return element;
+		},
+		
+		nextElementSibling: function( el ) {
+			var element = el.nextElementSibling || el.nextSibling;
+			while( element && element.nodeType !== 1 ) {
+				element = element.nextSibling;
+			}
+			return element;
+		},
+		
+		previousElementSibling: function( el ) {
+			var element = el.previousElementSibling || el.previousSibling;
+			while( element && element.nodeType !== 1 ) {
+				element = element.previousSibling;
+			}
+			return element;
+		},
+		
+		childElementCount: function( el ) {
+			var count = el.childElementCount || 0,
+				childNodes = el.childNodes,
+				length = childNodes.length;
+			
+			if(!count) {
+				for( var i = 0; i < length; i++ ) {
+					count = (childNodes[i].nodeType === 1) && (count + 1);
+				}
+			}
+			return count;
+		},
+
 		scrollLeft: function( elem ) {
 			return elem ? elem.scrollLeft : Math.max( window.pageXOffset || 0, document.body.scrollLeft, document.documentElement.scrollLeft );
 		},
