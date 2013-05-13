@@ -11,8 +11,10 @@
 <script type="text/javascript" src="url.js"></script>
 <script type="text/javascript">
 	Logger.isDebug = true;
-	var obj = URLParser("http://rob:abcd1234@www.example.com/path/index.html?query1=test&silly=willy#test=hash&chucky=cheese");
+	var obj = URLParser("http://amigo237:abc123@www.example.com/path/index.html?name=amigo237&sex=m#test=hash&age=25");
 	Logger.log(obj);
+	Logger.log(obj.getHashData().age);
+	Logger.log(obj.setHash({age: 26}));
 </script>
 </body>
 </html>
