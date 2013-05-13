@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>分页控件</title>
+<link href="pagination.css" rel="stylesheet" type="text/css" />
+<link href="../css/shCore.css" rel="stylesheet" type="text/css" />
+<link href="../css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,simsun,sans-serif;color:#333333;}
+*{margin:0 0;padding:0 0}
+#wrap {padding: 20px 10px}
+</style>
+</head>
+<body>
+	<div id="wrap">
+		<p>如何使用：</p>
+		<p>只需要引入js文件(Pagination.js)即可，不依赖任何其他库</p>
+		<p>css样式需要自定义，定义形式如下</p>
+			<pre class="brush: css">
+				/*定义分页按钮选中的样式*/
+				.pagination a.on{background:#2F688C;color:#fff;color: #fff;}
+				
+				/*定义分页按钮hover的样式*/
+				.pagination  a:hover{background:#2F688C;color:#fff;color: #fff;}
+				
+				/*定义分页按钮的样式*/
+				.pagination a{text-decoration:none; display:inline-block;padding: 2px 8px 2px;margin: 0 1px;border: 1px solid #6D95AE;vertical-align: middle;color: #2F688C;}
+			</pre>
+		<p>
+			初始化之后只需调用Pagination构造函数即可；如
+			<pre class="brush: js">
+				var pageobj = Pagination({
+					pagenum: 10,
+					total: 345,
+					el: obj,
+					callback: function(target_page){
+						alert(target_page);
+					}
+				});
+				//也可以选择new的形式调用,如
+				new Pagination();
+				
+				//构造函数传入的是一个对象：有如下配置选项：
+				options {
+					total: 			//一共有有多少个项
+					el:				//要插入的dom节点	
+					pagenum:		//可选，默认显示10个，每页显示多少个元素
+					showPageNum:	//可选，默认显示5个，分页要显示多少条目
+					callback:		//可选，点击分页之后的回调,会回传一个number表示点击的是第几页
+					moveStepSize:	//可选，默认为3，每次点到最末尾的一页之后前进或者后退多少项
+					currentPage:	//可选，默认为1，表示当前选中的页
+				}
+				//其他的可配置参数根据项目需要再具体添加
+			</pre>
+		</p>
+		<p>
+			对外提供的接口：
+			<pre class="brush: js">
+				1.初始化构造函数：
+				Pagination({});
+				
+				2.如果分页有变化，或者想改变分页的一些数据，如分页的总数等，可以调此函数进行重绘
+				rePaint({}); //传入的对象和构造函数传入的对象一样
+				
+				//示例：更改当前选中的页
+					var pageobj.rePaint({
+						currentPage: 20
+					});
+				//pageobj是调用构造函数传回的对象
+			</pre>
+		</p>
+		<p>示例：</p>
+		<div id="page"></div>
+	</div>
+<script type="text/javascript" src="../js/shCore.js"></script>
+<script type="text/javascript" src="../js/shBrushCss.js"></script>
+<script type="text/javascript" src="../js/shBrushJScript.js"></script>
+<script type="text/javascript" src="Pagination.js"></script>
+<script type="text/javascript">
+	SyntaxHighlighter.all()
+	var obj = document.getElementById("page");
+	var pageobj = Pagination({
+		pagenum: 10,
+		total: 345,
+		currentPage: 33,
+		el: obj,
+		callback: function(target_page){
+			alert(target_page);
+		}
+	});
+	
+	//setTimeout(function(){pageobj.rePaint({currentPage: 20})},2000)
+</script>
+</body>
+</html>

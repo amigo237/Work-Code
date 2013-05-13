@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>通用弹出层</title>
+<meta charset="utf-8" />
+<link href="/css/shCore.css" rel="stylesheet" type="text/css" />
+<link href="/css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<style>
+body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,simsun,sans-serif;color:#333333;}
+*{margin:0 0;padding:0 0}
+.popup{
+	padding: 5px;
+	background-color:#ffffff;
+}
+</style>
+<script type="text/javascript" src="jock-popUp2.js"></script>
+</head>
+
+<body>
+   <div>
+	  
+   </div>
+   <div id="wrap">
+        <h4>jock-popUp2.js  带关闭按钮的通用弹出层</h4> 
+		<p>1：如何使用</p>
+		<p>引入js文件<a title="点击下载" href="jock-popUp2.js">jock-popUp2.js</a>，不依赖任何其他库，不需要引入任何CSS文件。</p>
+		<p>复制默认的关闭按钮背景图片popup_close_layer.png到当前js目录，也可以自定义关闭按钮背景图，如示例。</p>
+		<p style="background-color:#000; height: 50px; width: 100px"><img src="popup_close_layer.png"/ ></p>
+		<p>此控制的功能只是用来弹出指定的一个DOM对象，本身并不生成弹出的层，也不处理弹出层的任何事件</p>
+		<p>2：popUp方法</p>
+			<pre class="brush: css">
+			    /*显示方法*/
+				popUp.show(dom, size[, options]);
+
+					dom: 你要弹出的层对象,如 var dom = document.getElementById("#id");
+
+					size:弹出层的宽高,如 var size = {height: 200, width: 200};
+
+					options:遮罩，动画效果参数
+
+					如果不提供options参数，它的默认值是
+					{
+						color: 'black', /*遮罩默认为黑色*/
+						opacity: 0.5,   /*遮罩透明度默认为0.5*/
+						alpha: true,    /*弹出时是否有透明度渐变动画，默认为true*/
+						slide: true    /*弹出时是否有滑动动画，默认为true*/
+						closeLayerImg = 'popup_close_layer.png';
+					}
+				
+				/*隐藏方法*/
+				popUp.hide();
+			</pre>
+		<p>
+			示例:
+			  <button id="popBtn">点击弹出</button>
+			  <p style="padding: 20px;"><img src="popupdemo.jpg" alt="图片"/></p>
+			 <pre class="brush: js">
+				var html = document.getElementById("contentTemplate").innerHTML;
+				var pop = document.createElement("div");
+					pop.innerHTML = html;
+				
+				var popBtn = document.getElementById("popBtn");
+					
+				popBtn.onclick = function(){
+					popUp.show(pop, {height: 490, width: 330}, {slide: true, alpha: true, opacity: 0.8, color: '#111'});
+				};
+			 </pre>
+		</p>
+		<div id="page"></div>
+	</div>
+</body>
+<script type="text/javascript" src="/js/shCore.js"></script>
+<script type="text/javascript" src="/js/shBrushCss.js"></script>
+<script type="text/javascript" src="/js/shBrushJScript.js"></script>
+<script type="text/javascript">
+SyntaxHighlighter.all();
+
+function hide(){
+	popUp.hide();
+}
+window.onload = function(){
+	var html = document.getElementById("contentTemplate").innerHTML;
+	var pop = document.createElement("div");
+		pop.innerHTML = html;
+	
+	var popBtn = document.getElementById("popBtn");
+		
+	popBtn.onclick = function(){
+		popUp.show(pop, {height: 490, width: 330}, {slide: true, alpha: true, opacity: 0.8, color: '#111'});
+	};
+};
+</script>
+ <script type="text/plain" id="contentTemplate">
+ <div id="pop" class="popup">
+	<img src="popupdemo.jpg" alt="图片"/>		
+ </div>
+ </script>
+</html>

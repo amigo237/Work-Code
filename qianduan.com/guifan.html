@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8" />
+<title>前端编码规范</title>
+<meta name="author" content="luzhao@xunlei.com" />
+<meta name="copyright" content="www.xunlei.com" />
+<link href="css/shCore.css" rel="stylesheet" type="text/css" />
+<link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<style>
+a {
+	text-decoration: none
+}
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 95%;
+    padding: 16px;
+    background: white;
+    overflow-y: scroll;
+    border-right: 3px double #999;
+}
+
+nav li {
+    padding: 1px 0;
+    font-size: 15px;
+	line-height: 150%
+}
+
+#content {
+    padding-left: 240px;
+    max-width: 800px;
+}
+
+p.rule {
+	font-weight: bold;
+	color: #666;
+	margin-top: 30px
+}
+
+</style>
+</head>
+<body>
+	<nav>
+        <h1>导航栏</h1>
+        <ul>
+			<li>
+				<a href="#">JavaScript编码规范</a>
+			</li>
+			<li>
+				<a href="#">CSS编码规范</a>
+			</li>
+		</ul>
+    </nav>
+	<section id="content">
+		<div id="javascript">
+			<h3>JavaScript编码规范</h3>
+			<p class="rule">表示区块的大括号不要换行</p>
+			<pre class="brush: js">
+				//建议
+				function hello() {
+					alert("hello world");
+				}
+				
+				//不建议
+				function hello()
+				{
+					alert("hello world");				
+				}
+				
+			</pre>
+			<p class="rule">调用函数的时候，函数名与左括号之间不要加空格</p>
+			<pre class="brush: js">
+				//建议
+				hello()
+				
+				//不建议
+				hello ()
+			</pre>
+			<p class="rule">定义函数名与参数列表之间不要添加空格</p>
+			<pre class="brush: js">
+				//建议
+				function add(a,b) {
+				}
+				
+				//不建议
+				function add (a,b) {
+				}
+			</pre>
+			<p class="rule">其它情况下左括号和语法元素应保留一个空格</p>
+			<pre class="brush: js">
+				//建议
+				return (5 + 10);
+				
+				//不建议
+				return(5 + 10);
+			</pre>
+			<p class="rule">句末都加上分号</p>
+			<pre class="brush: js">
+				//建议
+				alert("hello world");
+				
+				//不建议
+				alert("hello world")
+			</pre>
+			<p class="rule">尽量使用恒等”===”;不要使用”==”，除非你明确知道你同时要比较200和字符串”200”是否相等</p>
+			<pre class="brush: js">
+				function hello() {};
+				//建议
+				typeof hello === "function"
+				
+				//不建议
+				typeof hello == "function"
+				
+				//不建议，以下一段代码摘自caijiall.js
+				function in_array(val,vals)
+				{
+					for(var i = 0; i < vals.length; i++) {
+						//注意此处用了"==",你不一定能得到想要的结果,
+						//如果数组中有一项值为"01",你传入的是1，
+						//此时返回的结果也是true
+						if(val==vals[i]) {
+							return true;
+						}
+					}
+					return false;
+				}
+			</pre>
+			<p class="rule">数值操作符(如, +/-/*/% 等),赋值操作符/等价判断符两边留一空格两边留空</p>
+			<pre class="brush: js">
+				//建议
+				a = 1;
+				a = a + 1;
+				a == b;
+				
+				//不建议
+				a=1;
+				a=a+1;
+				a==b;
+			</pre>
+			<p class="rule">for 循环条件中, 分号后留一空格</p>
+			<pre class="brush: js">
+				//建议
+				for (var i = 1; i < 6; i++)
+				
+				//不建议
+				for (var i = 1;i < 6;i++)
+			</pre>
+			<p class="rule">如果一个对象的方法只是只供内部调用，则命名以下划线开头,其它情况尽量不要以下划线开头命名</p>
+			<pre class="brush: js">
+				//建议,_innerFn只是内部调用的私有函数
+				var obj = {
+					_innerFn: function(){}
+				}
+				
+				//不建议
+				var obj = {
+					innerFn: function(){}
+				}
+			</pre>
+			<p class="rule">如果一个函数的很多参数是可选的，请设置一个hash对象作为参数设置可选配置，保持API的灵活</p>
+			<pre class="brush: js">
+				//建议
+				function getScript(url, callback, option) {
+					//可以这样取charset
+					var charset = option.charset || "utf-8"
+				}
+				
+				//不建议，因为charset参数是可选的，也有很多类似的可配置选项，
+				//如果以后要增加参数会带来API的变动造成使用者的频繁更改
+				function getScript(url, charset, callback) {}
+			</pre>
+			<p class="rule">定义变量的时候都加上var，否则定义的变量会成为全局变量</p>
+			<pre class="brush: js">
+				//建议
+				function hello() {
+					var str = "world";
+				}
+				
+				//不建议，str此时成为了全局变量
+				function hello() {
+					str = "world";
+				}
+			</pre>
+			<p class="rule">尽量把能缓存的变量都缓存起来，提高代码执行效率</p>
+			<pre class="brush: js">
+				//建议
+				for(var i = 0, j = arr.length; i < j; i++)
+				
+				//不建议，每次循环都需要重新获取数组的长度，效率低
+				for(var i = 0; i < arr.length; i++)
+								
+				//不建议，这些代码都是从caijiall找出来的，可以先把找到
+				//的节点缓存起来，不要告诉我你不知道dom节点查找很费效率
+				var len=$("body").children().eq(0).nextAll().size();
+				var _node=$("body").children().eq(0).nextAll();
+			</pre>
+			<p class="rule">定义在dom节点上的自定义属性，key值都以data-key定义</p>
+			<pre class="brush: js">
+				//建议
+				<span data-sex="m"></span>
+				
+				//不建议其他形式的自定义属性
+				<span _sex="m"></span>
+			</pre>
+			<p class="rule">尽量使用数组和对象的字面量，不要去使用构造函数</p>
+			<pre class="brush: js">
+				//建议
+				var arr = [];
+				var obj = {};
+				
+				//不建议，代码摘自caijiall。用构造函数定义数组会因为传的
+				//参数个数造成歧义，而且用字面量会减少文件大小，为毛不用呢
+				var g_allpic = new Array();
+				var obj = new Object();
+			</pre>
+			<p class="rule">事件绑定请不要用对象.事件名的形式</p>
+			<pre class="brush: js">
+				//建议，此处用jquery举例,dom请用attachEvent,addEventListener
+				$(window).bind("resize",function(){});
+				
+				//不建议，代码摘自caijiall，这样绑定事件会把页面中用
+				//同样方式绑定的事件覆盖
+				window.onresize = function(){
+					obj_kindeditor.edit.setHeight(jQ(window).innerHeight()-135-40-63+'px');
+				}
+			</pre>
+			<p class="rule">为了视图层和控制层分离（不懂MVC的自己去复习），同时也是为了不要污染全局变量，请不要在html里面写事件绑定</p>
+			<pre class="brush: js">				
+				//不建议，代码摘自help.html
+				<span onclick="changeContent('whatis');" title="安装采集助手">安装采集助手</span>
+			</pre>
+			<p class="rule">以 4 个空格为一缩进层次</p>
+			<p class="rule">不要使用with语句</p>
+		</div>
+	</section>
+	
+<script type="text/javascript" src="js/shCore.js"></script>
+<script type="text/javascript" src="js/shBrushJScript.js"></script>
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>
+</body>
+</html>
+			

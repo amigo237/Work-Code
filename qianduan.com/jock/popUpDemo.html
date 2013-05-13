@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>通用弹出层</title>
+<meta charset="utf-8" />
+<link href="/css/shCore.css" rel="stylesheet" type="text/css" />
+<link href="/css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<style>
+body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,simsun,sans-serif;color:#333333;}
+*{margin:0 0;padding:0 0}
+#wrap {padding: 20px 10px}
+.popup {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+    overflow: hidden;
+    padding: 2px;
+    position: absolute;
+    width: 420px;
+    z-index: 100
+}
+.popup .hd {
+    background: none repeat scroll 0 0 #EEEEEE;
+    height: 36px;
+    line-height: 36px
+}
+.popup .hd h2 {
+    color: #585858;
+    float: left;
+    font-size: 14px;
+    padding-left: 10px
+}
+.popup .hd .cls {
+    float: right;
+    height: 11px;
+    margin: 13px 13px 0 0;
+    overflow: hidden;
+    text-indent: -999em;
+    width: 11px
+}
+.popup .cls {
+    background: url("btnbg_spr.png") no-repeat scroll -84px -163px transparent;
+    height: 11px;
+    width: 11px
+}
+.popup .p_info {
+    padding: 20px;
+}
+.popup .txt_info {
+    color: #444444;
+    line-height: 26px;
+    text-align: center
+}
+.popup .tit_txt {
+    font-size: 14px
+}
+.popup .main_info{
+	padding: 20px 15px
+}
+
+.popup .main_info .btn_left, .popup .main_info .btn_right{
+    background: url("btn_sbtn.png") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    display: inline-block;
+    font-size: 14px;
+    height: 31px;
+    line-height: 31px;
+    margin-right: 10px;
+    text-align: center;
+    width: 79px;
+	cursor:pointer
+}
+
+.popup .main_info .btn_box {
+    padding-top: 15px;
+    text-align: right
+}
+
+.popup .main_info .zt_info .tips_msg {
+	font-size: 14px;
+	font-weight: 400;
+	font-style: normal;
+	color: #B0B0B
+}
+
+</style>
+<script type="text/javascript" src="jock-popUp.js"></script>
+</head>
+
+<body>
+   <div>
+	  
+   </div>
+   <div id="wrap">
+        <h4>jock-popUp.js  带遮罩的通用弹出层</h4> 
+		<p>1：如何使用</p>
+		<p>只需要引入js文件<a title="点击下载" href="jock-popUp.js">jock-popUp.js</a>，不依赖任何其他库，不需要引入任何CSS文件。</p>
+		<p>此控制的功能只是用来弹出指定的一个DOM对象，本身并不生成弹出的层，也不处理弹出层的任何事件</p>
+		<p>2：popUp方法</p>
+			<pre class="brush: css">
+			    /*显示方法*/
+				popUp.show(dom, size[, options]);
+
+					dom: 你要弹出的层对象,如 var dom = document.getElementById("#id");
+
+					size:弹出层的宽高,如 var size = {height: 200, width: 200};
+
+					options:遮罩，动画效果参数
+
+					如果不提供options参数，它的默认值是
+					{
+						color: 'black', /*遮罩默认为黑色*/
+						opacity: 0.5,   /*遮罩透明度默认为0.5*/
+						alpha: true,    /*弹出时是否有透明度渐变动画，默认为true*/
+						slide: true    /*弹出时是否有滑动动画，默认为true*/
+					}
+				
+				/*隐藏方法*/
+				popUp.hide();
+			</pre>
+		<p>
+			示例1:
+			 <button id="popBtn1">默认弹出</button>
+			 <pre class="brush: js">
+				var popBtn1 = document.getElementById("popBtn1");
+				var html = document.getElementById("contentTemplate").innerHTML;
+				var pop = document.createElement("div");/*弹出的DOM*/
+				pop.innerHTML = html;
+
+				popBtn1.onclick = function(){
+					popUp.show(pop, {height: 142, width: 426});
+				};
+
+			 </pre>
+		</p>
+		<p>
+			示例2:
+			 <button id="popBtn2">无动画弹出</button>
+			 <pre class="brush: js">
+				var popBtn2 = document.getElementById("popBtn2");
+				var html = document.getElementById("contentTemplate").innerHTML;
+				var pop = document.createElement("div");/*弹出的DOM*/
+				pop.innerHTML = html;
+
+				popBtn2.onclick = function(){
+					popUp.show(pop, {height: 142, width: 426}, {slide: false, alpha: false, opacity: 0.6});
+				};
+
+			 </pre>
+		</p>
+		<p>
+			示例3:
+			  <button id="popBtn3">自定义遮罩色</button>
+			 <pre class="brush: js">
+				var popBtn3 = document.getElementById("popBtn3");
+				var html = document.getElementById("contentTemplate").innerHTML;
+				var pop = document.createElement("div");/*弹出的DOM*/
+				pop.innerHTML = html;
+
+				popBtn3.onclick = function(){
+					popUp.show(pop, {height: 142, width: 426}, {opacity: 0.7, color: "#0000ff"});
+				};
+			 </pre>
+		</p>
+		<div id="page"></div>
+	</div>
+</body>
+<script type="text/javascript" src="/js/shCore.js"></script>
+<script type="text/javascript" src="/js/shBrushCss.js"></script>
+<script type="text/javascript" src="/js/shBrushJScript.js"></script>
+<script type="text/javascript">
+SyntaxHighlighter.all();
+
+function hide(){
+	popUp.hide();
+}
+window.onload = function(){
+	var html = document.getElementById("contentTemplate").innerHTML;
+	var pop = document.createElement("div");
+		pop.innerHTML = html;
+	
+	var popBtn1 = document.getElementById("popBtn1");
+	var popBtn2 = document.getElementById("popBtn2");
+	var popBtn3 = document.getElementById("popBtn3");
+		
+	popBtn1.onclick = function(){
+		popUp.show(pop, {height: 142, width: 426});
+	};
+
+	popBtn2.onclick = function(){
+		popUp.show(pop, {height: 142, width: 426}, {slide: false, alpha: false, opacity: 0.6});
+	};
+
+	popBtn3.onclick = function(){
+		popUp.show(pop, {height: 142, width: 426}, {opacity: 0.7, color: "#0000ff"});
+	};
+};
+</script>
+ <script type="text/plain" id="contentTemplate">
+ <div id="pop" class="popup">
+		<div class="hd"><h2>系统提示</h2><a id="cls" href="javascript:void(0)" class="cls" onclick="hide();">关闭</a></div>
+		<div class="main_info">
+			<div class="zt_info">
+				<p class="tips_msg">这里是提示信息</p>
+				<p class="btn_box">
+				<a class="btn_left">确定</a>
+				<a class="btn_right">取消</a>
+				</p>
+			</div>
+		</div>
+	</div>
+ </script>
+</html>

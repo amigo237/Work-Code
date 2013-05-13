@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8" />
+<title>项目首页</title>
+<style>
+p {
+    margin: 5px auto;
+    text-indent: 0;
+}
+div {
+    font-family: verdana;
+    word-wrap: break-word;
+}
+.post a:link {
+    color: #78AFD3;
+    text-decoration: underline;
+}
+.post a:visited {
+    color: #78AFD3;
+    text-decoration: underline;
+}
+.post a:hover {
+    color: #A7A7A7;
+    text-decoration: underline;
+}
+.post a:active {
+    color: #78AFD3;
+    text-decoration: underline;
+}
+#cnblogs_post_body ol li {
+    list-style-type: decimal;
+}
+</style>
+</head>
+<body>
+	<div id="cnblogs_post_body" class="post">
+	<p>Fiddler是最强大最好用的Web调试工具之一，它能记录所有客户端和服务器的http和https请求，允许你监视，设置断点，甚至修改输入输出数据. 使用Fiddler无论对开发还是测试来说，都有很大的帮助。</p>
+	<p>阅读目录</p>
+	<ol>
+		<li><a href="#introduce">Fiddler的基本介绍</a></li>
+		<li><a href="#yuanli">Fiddler的工作原理</a></li>
+		<li><a href="#qita">同类的其它工具</a></li>
+		<li><a href="#firefox">Fiddler如何捕获Firefox的会话</a></li>
+		<li><a href="#fiddlerhook">Firefox 中使用Fiddler插件</a></li>
+		<li><a href="#https">Fiddler如何捕获HTTPS会话</a></li>
+		<li><a href="#basic">Fiddler的基本界面</a></li>
+		<li><a href="#summaryview">Fiddler的统计视图</a></li>
+		<li><a href="#quickexec">QuickExec命令行的使用</a></li>
+		<li><a href="#request">Fiddler中设置断点修改Request</a></li>
+		<li><a href="#response">Fiddler中设置断点修改Response</a></li>
+		<li><a href="#autoresponder">Fiddler中创建AutoResponder规则</a></li>
+		<li><a href="#filter">Fiddler中如何过滤会话</a></li>
+		<li><a href="#compare">Fiddler中会话比较功能</a></li>
+		<li><a href="#encodingtool">Fiddler中提供的编码小工具</a></li>
+		<li><a href="#findsession">Fiddler中查询会话</a></li>
+		<li><a href="#savesession">Fiddler中保存会话</a></li>
+		<li><a href="#script">Fiddler的script系统</a></li>
+		<li><a href="#vs">如何在VS调试网站的时候使用Fiddler</a></li>
+		<li><a href="#decodeResponse">Response 是乱码的</a></li>
+	</ol>
+	<h1 style="background-color: #a5a5a5;">Fiddler的基本介绍<a name="introduce"></a></h1>
+	<p>Fiddler的官方网站:&nbsp; <a target="_blank" href="http://www.fiddler2.com">www.fiddler2.com</a></p>
+	<p>Fiddler官方网站提供了大量的帮助文档和视频教程， 这是学习Fiddler的最好资料。</p>
+	<p>Fiddler是最强大最好用的Web调试工具之一，它能记录所有客户端和服务器的http和https请求，允许你监视，设置断点，甚至修改输入输出数据，Fiddler包含了一个强大的基于事件脚本的子系统，并且能使用.net语言进行扩展</p>
+	<p>你对HTTP 协议越了解， 你就能越掌握Fiddler的使用方法. 你越使用Fiddler,就越能帮助你了解HTTP协议.</p>
+	<p>Fiddler无论对开发人员或者测试人员来说，都是非常有用的工具</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler的工作原理<a name="yuanli"></a></h1>
+	<p>Fiddler 是以代理web服务器的形式工作的,它使用代理地址:127.0.0.1, 端口:8888. 当Fiddler退出的时候它会自动注销，这样就不会影响别的程序。不过如果Fiddler非正常退出，这时候因为Fiddler没有自动注销，会造成网页无法访问。解决的办法是重新启动下Fiddler.</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020409075327.png"></p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020409081574.png"></p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">同类的其它工具<a name="qita"></a></h1>
+	<p>同类的工具有: httpwatch, firebug, wireshark</p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler 如何捕获Firefox的会话<a name="firefox"></a></h1>
+	<p>能支持HTTP代理的任意程序的数据包都能被Fiddler嗅探到，Fiddler的运行机制其实就是本机上监听8888端口的HTTP代理。 Fiddler2启动的时候默认IE的代理设为了127.0.0.1:8888，而其他浏览器是需要手动设置的，所以将Firefox的代理改为127.0.0.1:8888就可以监听数据了。</p>
+	<p>Firefox 上通过如下步骤设置代理</p>
+	<p>点击: Tools -&gt; Options,&nbsp; 在Options 对话框上点击Advanced tab - &gt; network tab -&gt; setting.</p>
+	<p>&nbsp;</p>
+	<h1 id="tank_h1">Firefox 中安装Fiddler插件<a name="fiddlerhook"></a></h1>
+	<p>修改Firefox 中的代理比较麻烦， 不用fiddler的时候还要去掉代理。 麻烦</p>
+	<p>推荐你在firefox中使用fiddler hook 插件, 这样你非常方便的使用Fiddler获取firefox中的request 和response</p>
+	<p>当你安装fiddler后， 就已经装好了Fiddler hook插件， 你需要到firefox中去启用这个插件<br>打开firefox&nbsp;&nbsp; tools-&gt;Add ons -&gt; Extensions 启动 FiddlerHook</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012050910410873.jpg"></p>
+	<p>&nbsp;</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012050722424470.png"></p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler如何捕获HTTPS会话<a name="https"></a></h1>
+	<p>默认下，Fiddler不会捕获HTTPS会话，需要你设置下, 打开Fiddler&nbsp; Tool-&gt;Fiddler Options-&gt;HTTPS tab</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020409194719.png"></p>
+	<p>&nbsp;选中checkbox, 弹出如下的对话框，点击"YES"<strong><br></strong></p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020409204531.png"></p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020409211815.png"></p>
+	<p>点击"Yes" 后，就设置好了</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler的基本界面<a name="basic"></a></h1>
+	<p>&nbsp;看看Fiddler的基本界面</p>
+	<p><img width="907" height="630" alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020521421977.png"></p>
+	<p>&nbsp;</p>
+	<p>Inspectors tab下有很多查看Request或者Response的消息。 其中Raw Tab可以查看完整的消息，Headers tab 只查看消息中的header. 如下图</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012021417205917.png"></p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler的HTTP统计视图<a name="summaryview"></a></h1>
+	<p>通过陈列出所有的HTTP通信量，Fiddler可以很容易的向您展示哪些文件生成了您当前请求的页面。使用Statistics页签，用户可以通过选择多个会话来得来这几个会话的总的信息统计，比如多个请求和传输的字节数。</p>
+	<p>选择第一个请求和最后一个请求，可获得整个页面加载所消耗的总体时间。从条形图表中还可以分别出哪些请求耗时最多，从而对页面的访问进行访问速度优化</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020613564321.png"></p>
+	<h1 style="background-color: #a5a5a5;">QuickExec命令行的使用<a name="quickexec"></a></h1>
+	<p>Fiddler的左下角有一个命令行工具叫做QuickExec,允许你直接输入命令。</p>
+	<p>常见得命令有</p>
+	<p>help&nbsp; 打开官方的使用页面介绍，所有的命令都会列出来</p>
+	<p>cls&nbsp;&nbsp;&nbsp; 清屏&nbsp; (Ctrl+x 也可以清屏)</p>
+	<p>select&nbsp; 选择会话的命令</p>
+	<p>?.png&nbsp; 用来选择png后缀的图片</p>
+	<p>bpu&nbsp; 截获request</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020409303433.png"></p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中设置断点修改Request<a name="request"></a></h1>
+	<p><a target="_blank" href="http://www.cnblogs.com/TankXiao/admin/[作者：小坦克]%20http:/www.cnblogs.com/TankXiao/">[作者：小坦克]</a>&nbsp; Fiddler最强大的功能莫过于设置断点了，设置好断点后，你可以修改httpRequest 的任何信息包括host, cookie或者表单中的数据。设置断点有两种方法</p>
+	<p>第一种：打开Fiddler 点击Rules-&gt; Automatic Breakpoint&nbsp; -&gt;Before Requests(这种方法会中断所有的会话)</p>
+	<p>如何消除命令呢？&nbsp; 点击Rules-&gt; Automatic Breakpoint&nbsp; -&gt;Disabled</p>
+	<p>第二种:&nbsp; 在命令行中输入命令:&nbsp; bpu www.baidu.com&nbsp;&nbsp; (这种方法只会中断www.baidu.com)</p>
+	<p>如何消除命令呢？&nbsp; 在命令行中输入命令 bpu</p>
+	<p>&nbsp;</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020520463978.jpg"></p>
+	<p>看个实例，模拟博客园的登录， 在IE中打开博客园的登录页面，输入错误的用户名和密码，用Fiddler中断会话，修改成正确的用户名密码。这样就能成功登录</p>
+	<p>1. 用IE 打开博客园的登录界面&nbsp; http://passport.cnblogs.com/login.aspx<br>2. 打开Fiddler,&nbsp; 在命令行中输入bpu http://passport.cnblogs.com/login.aspx<br>3. 输入错误的用户名和密码 点击登录<br>4. Fiddler 能中断这次会话，选择被中断的会话，点击Inspectors tab下的WebForms tab 修改用户名密码，然后点击Run to Completion 如下图所示。<br>5. 结果是正确地登录了博客园</p>
+	<p><img width="904" height="548" alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020521214252.png"></p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中设置断点修改Response<a name="response"></a></h1>
+	<p>当然Fiddler中也能修改Response</p>
+	<p>第一种：打开Fiddler 点击Rules-&gt; Automatic Breakpoint&nbsp; -&gt;After Response&nbsp; (这种方法会中断所有的会话)</p>
+	<p>如何消除命令呢？&nbsp; 点击Rules-&gt; Automatic Breakpoint&nbsp; -&gt;Disabled</p>
+	<p>第二种:&nbsp; 在命令行中输入命令:&nbsp; bpuafter www.baidu.com&nbsp;&nbsp; (这种方法只会中断www.baidu.com)</p>
+	<p>如何消除命令呢？&nbsp; 在命令行中输入命令 bpafter,</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020612051996.jpg"></p>
+	<p>具体用法和上节差不多，就不多说了。</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中创建AutoResponder规则<a name="autoresponder"></a></h1>
+	<p>Fiddler 的AutoResponder tab允许你从本地返回文件，而不用将http request 发送到服务器上。</p>
+	<p>看个实例. 1. 打开博客园首页，把博客园的logo图片保存到本地，并且对图片做些修改。</p>
+	<p>2. 打开Fiddler 找到logo图片的会话， http://static.cnblogs.com/images/logo_2012_lantern_festival.gif，&nbsp; 把这个会话拖到AutoResponer Tab下</p>
+	<p>3. 选择Enable automatic reaponses 和Unmatched requests passthrough</p>
+	<p>4. 在下面的Rule Editor 下面选择 Find a file... 选择本地保存的图片.&nbsp; 最后点击Save 保存下。</p>
+	<p>5.&nbsp; 再用IE博客园首页, 你会看到首页的图片用的是本地的。</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020612312960.png"></p>
+	<p>&nbsp;</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020612332060.png"></p>
+	<p><br><br></p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中如何过滤会话<a name="filter"></a></h1>
+	<p>每次使用Fiddler, 打开一个网站，都能在Fiddler中看到几十个会话，看得眼花缭乱。最好的办法是过滤掉一些会话，比如过滤掉图片的会话. Fiddler中有过滤的功能, 在右边的Filters tab中，里面有很多选项, 稍微研究下，就知道怎么用。</p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中会话比较功能<a name="compare"></a></h1>
+	<p>选中2个会话，右键然后点击Compare，就可以用WinDiff来比较两个会话的不同了 (当然需要你安装WinDiff)</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020612094928.png"></p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中提供的编码小工具<a name="encodingtool"></a></h1>
+	<p>点击Fiddler 工具栏上的TextWizard,&nbsp; 这个工具可以Encode和Decode string.</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020612125974.png"></p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中查询会话<a name="findsession"></a></h1>
+	<p>用快捷键Ctrl+F 打开 Find Sessions的对话框，输入关键字查询你要的会话。 查询到的会话会用黄色显示</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020612460937.png"></p>
+	<h1 style="background-color: #a5a5a5;">Fiddler中保存会话<a name="savesession"></a></h1>
+	<p>有些时候我们需要把会话保存下来，以便发给别人或者以后去分析。&nbsp; 保存会话的步骤如下：</p>
+	<p>选择你想保存的会话，然后点击File-&gt;Save-&gt;Selected Sessions</p>
+	<h1 style="background-color: #a5a5a5;">Fiddler的script系统<a name="script"></a></h1>
+	<p>Fiddler最复杂的莫过于script系统了 官方的帮助文档: <a target="_blank" href="http://www.fiddler2.com/Fiddler/dev/ScriptSamples.asp">http://www.fiddler2.com/Fiddler/dev/ScriptSamples.asp</a></p>
+	<p>首先先安装SyntaxView插件，Inspectors tab-&gt;Get SyntaxView tab-&gt;Download and Install SyntaxView Now... 如下图</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020613160323.png"></p>
+	<p>&nbsp;</p>
+	<p>安装成功后Fiddler 就会多了一个Fiddler Script tab, 如下图</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020613173260.png"></p>
+	<p>在里面我们就可以编写脚本了， 看个实例 让所有cnblogs的会话都显示红色。</p>
+	<p>把这段脚本放在OnBeforeRequest(oSession: Session) 方法下，并且点击"Save script"</p>
+	<div class="cnblogs_code">
+	<pre>     <span style="color: #0000ff;">if</span> (oSession.HostnameIs("www.cnblogs.com")) {<br>            oSession["ui-color"] = "red";<br>        }</pre>
+	</div>
+	<p>这样所有的cnblogs的会话都会显示红色</p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">如何在VS调试网站的时候使用Fiddler<a name="vs"></a></h1>
+	<p>我们在用visual stuido 开发ASP.NET网站的时候也需要用Fiddler来分析HTTP， 默认的时候Fiddler是不能嗅探到localhost的网站。不过只要在localhost后面加个点号，Fiddler就能嗅探到。</p>
+	<p>例如：原本ASP.NET的地址是 http://localhost:2391/Default.aspx，&nbsp; 加个点号后，变成 http://localhost.:2391/Default.aspx 就可以了</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012020620575359.png"></p>
+	<p>&nbsp;</p>
+	<p>第二个办法就是在hosts文件中加入&nbsp; 127.0.0.1&nbsp; localsite</p>
+	<p>如何你访问http://localsite:端口号&nbsp;&nbsp; 。&nbsp; 这样Fiddler也能截取到了。</p>
+	<p>&nbsp;</p>
+	<h1 style="background-color: #a5a5a5;">Response 是乱码的<a name="decodeResponse"></a></h1>
+	<p>有时候我们看到Response中的HTML是乱码的， 这是因为HTML被压缩了， 我们可以通过两种方法去解压缩。</p>
+	<p>1. 点击Response Raw上方的"Response is encoded any may need to be decoded before inspection. click here to transform"</p>
+	<p>2. 选中工具栏中的"Decode"。&nbsp; 这样会自动解压缩。</p>
+	<p><img alt="" src="http://pic002.cnblogs.com/images/2012/263119/2012031512494991.png"></p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+</div>
+</body>
+</html>
