@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>MouseScrollEvent</title>
+<meta charset="utf-8" />
+<style>
+body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,simsun,sans-serif;color:#333333;}
+*{margin:0 0;padding:0 0}
+#wrap {padding: 20px 10px}
+
+.slider {
+    background: none repeat scroll 0 0 #EEEEEE;
+    cursor: n-resize;
+    height: 180px;
+    padding: 10px 0;
+    width: 50px;
+}
+
+.slider-slot {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-color: #999999 white white #999999;
+    border-style: solid;
+    border-width: 1px;
+    height: 180px;
+    margin: 0 auto;
+    position: relative;
+    width: 16px;
+}
+
+.slider-trigger {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #CCCCCC;
+    border-color: white #999999 #999999 white;
+    border-style: solid;
+    border-width: 1px;
+    font: 1px/0 arial;
+    height: 18px;
+    position: absolute;
+    width: 14px;
+}
+</style>
+</head>
+
+<body>
+   <div id="wrap">
+        <h2><a href="MouseScrollEvent.js">MouseScrollEvent.js</a></h2><br/>
+		<h2>鼠标滚动事件应用举例:</h2><br/>
+		<p>
+		<h4>示例1: 文本框增加/减少值</h4>
+		<div><input id="txt" value="1440" type="text" /><span id="warn">文本框获得焦点后滚动鼠标滚轮</span></div>
+		</p>
+		<br/>
+		<p>
+			<h4>示例2: 鼠标滚动缩放图片</h4>
+			<div><img src="http://pic002.cnblogs.com/images/2011/118392/2011041914075245.jpg" id="img" style="cursor: -moz-zoom-in;" title="鼠标滚动 缩放大小" width="300" /></div>
+		</p>
+		<br/>
+		<p>
+			<h4>示例3: 鼠标滚动控制滑块移动</h4>
+			<div class="slider" id="slider">
+				<div class="slider-slot">
+				<div class="slider-trigger" id="sliderTrigger"> 
+				<strong>&nbsp;</strong> 
+				<strong>&nbsp;</strong> 
+				<strong>&nbsp;</strong> 
+				<strong></strong> 
+				<strong></strong> 
+				</div>
+				</div>
+			</div>
+		</p>
+	</div>
+</body>
+<script type="text/javascript" src="logger.js"></script>
+<script type="text/javascript" src="mouseScrollEvent.js"></script>
+<script type="text/javascript">
+	var $ = function(i){ 
+		return document.getElementById( i ); 
+	} 
+	//取得滚动值 
+	function getWheelValue( e ) { 
+		e = e||event; 
+		return ( e.wheelDelta ? e.wheelDelta/120 : -( e.detail%3 == 0 ? e.detail/3 : e.detail ) ) ; 
+	} 
+
+	function stopEvent(e) { 
+		e = e||event; 
+		if( e.preventDefault )e.preventDefault(); 
+		e.returnValue = false; 
+	} 
+	//绑定事件,这里对mousewheel做了判断,注册时统一使用mousewheel 
+	function addEvent( obj,type,fn ){ 
+		var isFirefox = typeof document.body.style.MozUserSelect != 'undefined'; 
+		if( obj.addEventListener ) 
+			obj.addEventListener( isFirefox ? 'DOMMouseScroll' : type,fn,false ); 
+		else 
+			obj.attachEvent( 'on'+type,fn ); 
+		return fn; 
+	} 
+	//移除事件,这里对mousewheel做了兼容,移除时统一使用mousewheel 
+	function delEvent( obj,type,fn ) { 
+		var isFirefox = typeof document.body.style.MozUserSelect != 'undefined'; 
+		if( obj.removeEventListener ) 
+			obj.removeEventListener( isFirefox ? 'DOMMouseScroll' : type,fn,false ); 
+		else 
+			obj.detachEvent( 'on'+type,fn ); 
+	} 
+	/*限制范围函数, 
+	参数是三个数字,如果num 大于 max, 则返回max， 如果小于min，则返回min,如果在max和min之间，则返回num 
+	*/ 
+	function range( num, max,min ){ 
+		return Math.min( max, Math.max( num,min ) ); 
+	} 
+	/* ------------ */ 
+	/* <h2>文本框增加/减少值</h2> */ 
+	$( 'txt' ).onfocus = function() { 
+		//保存txt自己的引用 
+		var me = this, 
+		//onfocus之后注册滚轮事件 
+		handler = addEvent( me,'mousewheel',function(e) { 
+			stopEvent( e ); 
+			var delta = getWheelValue(e); 
+			/* 
+			+me.value 将me.value转换成数字， 
+			然后使用isNaN检查转换后的数字是否为NaN 
+			如果是，重新赋值me.value=0; 
+			*/ 
+			if( isNaN( +me.value ) ) me.value = 0; 
+			//递增（或递减） 
+			me.value = +me.value + delta; 
+			//选中me里的文字 
+			me.select(); 
+		}); 
+
+		//失去焦点时，把mousewheel事件移除，重置window.onblur和handler引用为null 
+		this.onblur = function() { 
+			//移除掉mousewheel事件 
+			delEvent( me,'mousewheel',handler ); 
+			window.onblur = handler = null; 
+		} 
+	//为了防止浏览器失焦后，文本框重复触发focus，在onblur时，让文本框同时失焦 
+		window.onblur = function() { 
+			me.blur(); 
+			//把自己清理掉 
+			this.onblur = null; 
+		} 
+	} 
+
+	/* <h2>鼠标滚动缩放图片</h2> */ 
+	addEvent( $('img'),'mousewheel',function(e) { 
+		stopEvent( e ); 
+		var delta = getWheelValue(e); 
+		//每次递增（或递减）10px，使用了范围限制，保证图片不会过大过小 
+		var img = $('img'); //没有修复ie的this指向，所以这里只好重新获取img 
+		img.style.width = range( img.offsetWidth + ( delta * 10 ),550,100) + 'px'; 
+		return false; 
+	}); 
+
+	MouseScrollEvent.addMouseScrollListener( document, function(e) {
+		Logger.isDebug = true;
+		Logger.log(MouseScrollEvent.getEventObject(e));
+	});
+
+	/* <h2>鼠标滚动控制滑块移动</h2> */ 
+	addEvent( $('slider'), 'mousewheel',function(e) { 
+		stopEvent( e ); 
+		var delta = getWheelValue(e), 
+		tar = $('sliderTrigger'); 
+		//杯具的反转，因为tar.offsetTop 越大，滑块就越往下，所以delta又需要反转回来，向上是负的，向下是正的，所以乘以-1 
+		tar.style.top = range( tar.offsetTop + ( -1 * delta * 10 ),160,0 ) + 'px'; 
+	});
+</script>
+</html>
