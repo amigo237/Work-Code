@@ -26,6 +26,9 @@ body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,s
 				
 				/*定义分页按钮的样式*/
 				.pagination a{text-decoration:none; display:inline-block;padding: 2px 8px 2px;margin: 0 1px;border: 1px solid #6D95AE;vertical-align: middle;color: #2F688C;}
+
+				/*定义分页间隙样式，对应的是"..."样式*/
+				.pagination .gap{margin: 0 8px};
 			</pre>
 		<p>
 			初始化之后只需调用Pagination构造函数即可；如
@@ -43,13 +46,15 @@ body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,s
 				
 				//构造函数传入的是一个对象：有如下配置选项：
 				options {
-					total: 			//一共有有多少个项
-					el:				//要插入的dom节点	
-					pagenum:		//可选，默认显示10个，每页显示多少个元素
-					showPageNum:	//可选，默认显示5个，分页要显示多少条目
-					callback:		//可选，点击分页之后的回调,会回传一个number表示点击的是第几页
-					moveStepSize:	//可选，默认为3，每次点到最末尾的一页之后前进或者后退多少项
-					currentPage:	//可选，默认为1，表示当前选中的页
+					total:                 //一共有有多少个项
+					el:                    //要插入的dom节点，分页的html将插入到这个节点中，保证这个节点没有其他内容，要不然会覆盖掉	
+					pagenum:               //可选，默认显示10个，每页显示多少个元素
+					showPageNum:           //可选，默认显示5个，分页要显示多少条目
+					callback:              //可选，点击分页之后的回调,会回传一个number表示点击的是第几页
+					moveStepSize:          //可选，默认为3，每次点到最末尾的一页之后前进或者后退多少项
+					currentPage:           //可选，默认为1，表示当前选中的页
+					isShowFrontPageBtn:    //可选，默认为true，表示显示首页，末页的按钮，只要首页按钮不显示，则末页按钮也不显示
+					isShowTotalPageText:       //可选，默认为true，表示显示总共有多少页
 				}
 				//其他的可配置参数根据项目需要再具体添加
 			</pre>
@@ -68,6 +73,9 @@ body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,s
 						currentPage: 20
 					});
 				//pageobj是调用构造函数传回的对象
+
+				3.跳转到相应页面的函数
+				pageobj.gotoPage(2); //跳转到第二页，传入一个number参数
 			</pre>
 		</p>
 		<p>示例：</p>
@@ -82,15 +90,17 @@ body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,s
 	var obj = document.getElementById("page");
 	var pageobj = Pagination({
 		pagenum: 10,
-		total: 345,
-		currentPage: 33,
+		total: 72,
+		currentPage: 7,
 		el: obj,
+		isShowFrontPageBtn: false,
+		isShowTotalPageText: false,
 		callback: function(target_page){
 			alert(target_page);
 		}
 	});
 	
-	//setTimeout(function(){pageobj.rePaint({currentPage: 20})},2000)
+	//setTimeout(function(){pageobj.rePaint({total: 97})},2000)
 </script>
 </body>
 </html>

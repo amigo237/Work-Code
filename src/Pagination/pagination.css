@@ -1,3 +1,4 @@
 .pagination a.on{background:#2F688C;color:#fff;color: #fff;}
 .pagination  a:hover{background:#2F688C;color:#fff;color: #fff;}
 .pagination a{text-decoration:none; display:inline-block;padding: 2px 8px 2px;margin: 0 1px;border: 1px solid #6D95AE;vertical-align: middle;color: #2F688C;}
+.pagination .gap{margin: 0 8px};
