@@ -1,14 +1,32 @@
-(function(window, document) {
+ï»¿( function( window, document ) {
 	var Util = {
-		//µ¼ÈëĞĞÄÚÑùÊ½
-		//cssText: ĞèÒªµ¼ÈëµÄĞĞÄÚÑùÊ½
-		//example: importStyle('.login_link_in a { color: #8f8f8f }')
-		importStyle: function(cssText) {
-			var element = document.createElement('style');
-			element.appendChild(document.createTextNode(cssText));
-			document.head.appendChild(element);
+		/**
+		 * importStyle
+		 *
+		 * å¯¼å…¥è¡Œå†…æ ·å¼
+		 *
+		 * @param {String} cssText - éœ€è¦å¯¼å…¥çš„è¡Œå†…æ ·å¼
+		 */
+		 
+		importStyle: function( cssText ) {
+			var element = document.createElement( 'style' );
+			element.appendChild( document.createTextNode( cssText ) );
+			document.head.appendChild( element );
+		},
+
+		getBytesLength: function( str ) {
+			var len = 0;
+			for( var i = 0, j = str.length; i < j; i++ ) {
+				str.charCodeAt(i) > 255 ? len += 2 : len += 1;
+			}
+			return len;
+		},
+
+		random: function( min, max ) {
+			return min + Math.random() * ( max - min );
 		}
 	};
 	
 	window["Util"] = window.Util || Util;
-})(window, document)
+	
+})( window, document )
