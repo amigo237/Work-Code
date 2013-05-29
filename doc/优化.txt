@@ -1,0 +1,30 @@
+减少网络传输字节数
+	gzip压缩
+	css，js，图片压缩
+	设置缓存
+	设置无cookie的域名存放静态资源
+
+加快网络传输速度
+	cdn
+
+减少http请求
+	js，css，图片合并
+	html5离线
+	存储ajax数据
+	html5本地化存储
+
+css
+	简单化css选择器，尽量用id
+	减少回流
+	尽量不要用css表达式
+	做动画的时候是元素脱离文档流
+
+js
+	大任务分割处理，webwork，setTimeout
+	dom节点缓存
+	少用闭包
+	少用行内脚本，不利于缓存
+
+加快页面渲染速度
+	css放在头部，js放在尾部
+	lazy load

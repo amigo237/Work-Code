@@ -1,0 +1,25 @@
+css
+	盒模型
+	position
+	滤镜
+	css3选择器
+	inline-block
+
+js
+	ecmascript新加的特性都没有
+	bind
+	filter等等
+	不支持严格模式
+
+dom
+	事件绑定
+	滚动事件都不同
+	自定义事件
+	firstElementChild
+	html5新加的属性都没有
+	dataset
+	outerHTML
+	获取css最后计算的属性方法不同
+
+html
+	新加的html5标签
