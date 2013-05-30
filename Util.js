@@ -9,9 +9,16 @@
 		 */
 		 
 		importStyle: function( cssText ) {
-			var element = document.createElement( 'style' );
-			element.appendChild( document.createTextNode( cssText ) );
-			document.head.appendChild( element );
+			var head = document.head || document.getElementsByTagName('head')[0];
+			var style = document.createElement( 'style' );
+			style.setAttribute( "type", "text/css" );
+			if( style.styleSheet ) { // IE
+				style.styleSheet.cssText = cssText;
+			} 
+			else {
+				style.appendChild( document.createTextNode( cssText ) );
+			}
+			head.appendChild( style );
 		},
 
 		getBytesLength: function( str ) {
