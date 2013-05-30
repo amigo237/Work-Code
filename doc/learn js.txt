@@ -3,3 +3,6 @@ http://justineo.github.io/singles/writing-modular-js/
 
 笔试，面试题
 http://mianshiti.diandian.com/
+
+切面编程一些实际运用
+http://www.alloyteam.com/2013/05/javascript-code-with-aop-improvement/
