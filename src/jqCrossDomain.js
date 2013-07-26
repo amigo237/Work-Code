@@ -10,7 +10,7 @@
 
 	var counter = 0;
 	if (!$.support.cors) {
-		$.postForm =  function ( options, callback, formId, action, method) {
+		$.postForm =  function (options) {
 			if (!options.url) {
 				throw new Error("非法url");
 			}
