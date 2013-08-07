@@ -1,4 +1,9 @@
-﻿(function (factory) {
+﻿/*!
+ * jqCrossDomain v1.0.0
+ * Copyright (c) 2013, in shenzhen. luzhao@xunlei.com
+ */
+ 
+(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
@@ -31,7 +36,7 @@
 			iframe = $('<iframe src="javascript:false;" name="iframe-transport-' + counter + '" style="display:none;" scrolling="no" frameborder="0"></iframe>');
 		
 			$.each(data, function(key, value) {
-				$('<input name="' + key + '" type="text" value=' + value + ' />').appendTo(form);
+				$('<input name="' + key + '" type="text" value="' + value + '" />').appendTo(form);
 			});
 			
 			if (options.redirect) {
