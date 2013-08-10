@@ -9,12 +9,22 @@
 </head>
 <body>
 <div>
-    
+    <input type="text" id="name" value="lu" />
+    <input type="text" id="sex"  />
 </div>
 <script type="text/javascript" src="http://feedback.client.xunlei.com/js/lib/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../src/jqValidate.js"></script>
 <script type="text/javascript">
-
+    console.dir($("#sex").validate("minLength", 2));
+    $("#sex").monitor("required", function() {
+        console.dir("性别不能为空");
+    })
+    .monitor("minLength", 2, function() {
+        console.dir("长度不够");
+    })
+    .monitor("maxLength", 5, function() {
+        console.dir("长度超过");
+    });
 </script>
 </body>
 </html>
