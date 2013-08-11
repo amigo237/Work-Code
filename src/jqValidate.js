@@ -9,10 +9,14 @@
     var message = {
         required: '不能为空。',
         minLength: '字符长度不够。',
-        maxLength: '字符超长。'
+        maxLength: '字符超长。',
+        mobile: '非法的电话号码。',
+        email: '非法的邮箱。'
     };
     
-    var numericRegex = /^[0-9]+$/;
+    var numericRegex = /^[0-9]+$/,
+        mobileRegex = /^(13[0-9]|15[0-9]|18[0-9]|14[0-9])\d{8}$/,
+        emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
         
     var validate = {
         required: function (value) {
@@ -34,6 +38,14 @@
             
             return (value.length <= parseInt(length, 10));
         },
+        
+        mobile: function (value) {
+            return mobileRegex.test(value);
+        },
+        
+        email: function (value) {
+            return emailRegex.test(value);
+        }
     };
     
     $.fn.validate = function (type) {

@@ -16,7 +16,7 @@
 <script type="text/javascript" src="../src/jqValidate.js"></script>
 <script type="text/javascript">
     console.dir($("#sex").validate("minLength", 2));
-    $("#sex").monitor("required minLength maxLength", function(result) {
+    $("#sex").monitor("required email", function(result) {
         console.dir(result);
     });
 </script>
