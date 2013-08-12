@@ -11,13 +11,17 @@
         minLength: '字符长度不够。',
         maxLength: '字符超长。',
         mobile: '非法的电话号码。',
-        email: '非法的邮箱。'
+        email: '非法的邮箱。',
+        chineseName: '非法的中文名。',
+        idCard: '非法的身份证号。'
     };
     
     var numericRegex = /^[0-9]+$/,
         mobileRegex = /^(13[0-9]|15[0-9]|18[0-9]|14[0-9])\d{8}$/,
-        emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-        
+        emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        chineseNameRegex = /^[\u4E00-\u9FA5]{2,}(?:·[\u4E00-\u9FA5]{1,})*$/,
+        idCardRegex = /(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}[X|x|0-9]$)|(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)/;
+
     var validate = {
         required: function (value) {
             return value !== "" && value !== null;
@@ -45,8 +49,18 @@
         
         email: function (value) {
             return emailRegex.test(value);
+        },
+        
+        chineseName: function (value) {
+            return chineseNameRegex.test(value);
+        },
+        
+        idCard: function (value) {
+            return idCardRegex.test(value);
         }
     };
+    
+    $.validate = validate;
     
     $.fn.validate = function (type) {
         var result,
