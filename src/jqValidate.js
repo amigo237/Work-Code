@@ -3,7 +3,7 @@
  * Copyright (c) 2013, in shenzhen. luzhao@xunlei.com
  */
 
-(function ($) {
+;(function ($) {
     "use strict"
     
     var message = {
@@ -24,7 +24,12 @@
 
     var validate = {
         required: function (value) {
+            value = $.trim(value);
             return value !== "" && value !== null;
+        },
+        
+        number: function(value) {
+            return numericRegex.test(value);
         },
         
         minLength: function (value, length) {
@@ -65,7 +70,7 @@
     $.fn.validate = function (type) {
         var result,
             condition,
-            value = $.trim(this.val()),
+            value = $.trim($(this).val()),
             func = validate[type];
         
         if (!$.isFunction(func)) {
@@ -125,4 +130,4 @@
         
         return this;
     };
-})(jQuery)
+})(jQuery);
