@@ -1,0 +1,31 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Number To Chinese</title>
+</head>
+<body>
+<script type="text/javascript">
+function numberToChinese(num) {    
+    if (Object.prototype.toString.call(num) !== "[object Number]") {
+        return "数据非法";
+    }
+    
+    num = ("" + num).replace(/^0*/, "");
+
+    var unit = "千百十亿千百十万千百十元",
+        ChineseNumber = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+        str = "";
+    
+    unit = unit.substr(unit.length - num.length);
+    for (var i = 0; i < num.length; i++) {
+        str += ChineseNumber[num.charAt(i)] + unit.charAt(i);
+    }
+    
+    return str.replace(/零(千|百|十)/g, "零").replace(/零{2,}/g, "零").replace(/零(万|亿|元)/g, "$1");
+}
+
+alert(numberToChinese(20304201));
+</script>
+</body>
+</html>

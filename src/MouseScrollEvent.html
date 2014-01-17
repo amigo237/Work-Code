@@ -159,7 +159,7 @@ body {font:normal 14px/20px 微软雅黑,宋体,Arial,Verdana,Lucida,Helvetica,s
 	addEvent( $('img'),'mousewheel',function(e) { 
 		stopEvent( e ); 
 		var delta = getWheelValue(e); 
-		//每次递增（或递减）10px，使用了范围限制，保证图片不会过大过小 
+		//每次递增（或递减）10px，使用了范围限制，保证图片不会过大过小
 		var img = $('img'); //没有修复ie的this指向，所以这里只好重新获取img 
 		img.style.width = range( img.offsetWidth + ( delta * 10 ),550,100) + 'px'; 
 		return false; 
