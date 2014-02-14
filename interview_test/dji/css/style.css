@@ -1,0 +1,43 @@
+﻿* {
+    margin: 0; 
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #E7E7E7;
+}
+
+.container {
+    width: 960px;
+    height: 490px;
+    margin: 50px auto 0px;
+    overflow: hidden;
+    position: relative;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    cursor: url('../img/jquery.reel.cur'),move;
+}
+
+.img_camera_box{
+}
+
+.img_camera {
+    float: left;
+    cursor: url('../img/jquery.reel.cur'),move;
+}
+
+.play {
+    position: absolute;
+    top: 80px;
+    right: 127px;
+    width: 78px;
+    height: 82px;
+    background: url(../img/phantom2-vision-tap2.png) 0 0 no-repeat;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+    display: block;
+}
