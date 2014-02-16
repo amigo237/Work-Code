@@ -1,7 +1,5 @@
 ﻿/*
- *
  * 为了方便查看，业务逻辑和封装的类库都放在了一个js里，没有拆分成多个js文件
- *
  */
 
 //Camera类和Util类
@@ -38,13 +36,21 @@
         }
     };
     
+    /*
+     * Camera类可选设置参数
+     * options: {
+     *      box:        //包含每帧动画的容器，类型为dom对象,必填
+     *      autoPlay:   //初始化完成之后是否自动播放，默认为false，不自动播放
+     *      direction:  //摄像头移动的方向，可选参数："down", "up"。默认为"down"，向下移动
+     *      isDrag:     //是否需要支持拖拽控制摄像头，默认为false，不需要支持拖拽
+     * }
+     */
     var Camera = function(options) {
         if (!(this instanceof Camera)) {
             return new Camera(options);
         }
         
         options = options || {};
-        
         if (!options.box) {
             throw new Error("missing parameter box");
         }
@@ -83,11 +89,12 @@
         
         _initDrag: function() {
             var self = this,
-                originalY, 
-                checkMousemove = false, 
-                initialDirection;
+                originalY,
+                clickFameIndex = null,
+                isMouseMove = false;
                 
             function mousemoveHandler(e) {
+                isMouseMove = true;
                 e = e || window.event;
                 var distance = Math.abs(originalY - e.screenY);
                 if (distance > 5) {
@@ -107,18 +114,38 @@
                 self.stop();
                 e = e || window.event;
                 originalY = e.screenY;
-                checkMousemove = false;
+                isMouseMove = false;
+
+                if (self.index >= (1 + self.totalNum / 2)) {
+                    var currentNode = self.node[self.index];
+                    var currentFrame = currentNode.getAttribute("data-frame");
+                    clickFameIndex = self.index;
+                    for (var i = 1, j = self.totalNum / 2; i < j; i++) {
+                        var node = self.node[i];
+                        if (node.getAttribute("data-frame") == currentFrame) {
+                            self.index = i;
+                            node.style.display = "";
+                            currentNode.style.display = "none";
+                            break;
+                        }
+                    }
+                }
+                else {
+                    clickFameIndex = null;
+                }
                 U.on(document, "mousemove", mousemoveHandler);
             });
             
             U.on(document, "mouseup", function() {
+                if (!isMouseMove) {
+                    if (clickFameIndex !== null) {
+                        self.node[clickFameIndex].style.display = "";
+                        self.node[self.index].style.display = "none";
+                        self.index = clickFameIndex;
+                    }
+                    self.playFrame();
+                }
                 U.off(document, "mousemove", mousemoveHandler);
-            });
-            
-            U.on(this.box, "click", function() {
-                self.stop();
-                self.playFrame();
-                return false;
             });
         },
         
@@ -156,9 +183,9 @@
     
     if ("function" == typeof define && define.amd) {
         //如果有用AMD或者CMD等模块化类库，应该要把Util拆成一个模块，这儿为了方便没有拆分
-        define(function(require, exports, module) {
-            return Camera;
-        });
+        // define(function(require, exports, module) {
+            // return Camera;
+        // });
     }
     else {
         global.Camera = Camera;
