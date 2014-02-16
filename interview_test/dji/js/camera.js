@@ -52,6 +52,7 @@
         this.box = options.box;
         this.autoPlay = options.autoPlay || false;
         this.direction = options.direction || "down";
+        this.isDrag = options.isDrag || false;
         this.index = 0;
         this.node = [];
         this.timer = null;
@@ -69,9 +70,54 @@
         constructor: Camera,
         
         _init: function() {
+            if (this.isDrag) {
+                this._initDrag();
+            }
             if (this.autoPlay) {
                 this.play();
             }
+        },
+        
+        _initDrag: function() {
+            var self = this,
+                originalY, 
+                checkMousemove = false, 
+                initialDirection;
+                
+            function mousemoveHandler(e) {
+                e = e || window.event;
+                var distance = Math.abs(originalY - e.screenY);
+                if (distance > 5) {
+                    var direction = originalY - e.screenY < 0 ? "down" : "up";
+                    if (!checkMousemove || direction !== initialDirection) {                        
+                        initialDirection = self.direction = direction;
+                        checkMousemove = true;
+                    }
+                    var times = Math.floor(distance / 5);
+                    originalY = e.screenY;
+                    var timer = setInterval(function() {
+                        times > 0 ? self.playFrame(): clearInterval(timer);
+                        times--;
+                    }, 20);
+                }
+                U.preventDefault(e);
+            };
+            
+            U.on(this.box, "mousedown", function(e) {
+                e = e || window.event;
+                originalY = e.screenY;
+                checkMousemove = false;
+                U.on(document, "mousemove", mousemoveHandler);
+            });
+            
+            U.on(document, "mouseup", function() {
+                U.off(document, "mousemove", mousemoveHandler);
+            });
+            
+            U.on(this.box, "click", function() {
+                self.playFrame();
+                return false;
+            });
         },
         
         play: function() {
@@ -92,7 +138,8 @@
         playFrame: function() {
             var self = this,
                 index = this.index;
-            this.adjustDirection();
+
+            this._adjustDirection();
             this.node[index].style.display = "none";
             if (this.direction === "down") {
                 index += 1;
@@ -104,9 +151,8 @@
             this.node[this.index].style.display = "";
         },
         
-        adjustDirection: function(direction) {
+        _adjustDirection: function() {
             var index = this.index;
-            direction && (this.direction = direction);
             if (this.direction === "down") {
                 index += 1;
                 if (index >= this.totalNum) {
@@ -119,6 +165,7 @@
                     this.direction = "down";
                 }
             }
+            return this;
         }
     };
     
@@ -141,7 +188,8 @@
     var playBtn = U.id("playBtn");
     var camera = Camera({
         box: cameraBox,
-        autoPlay: false
+        autoPlay: false,
+        isDrag: true
     });
     
     var Controller = {
@@ -150,9 +198,7 @@
         },
 
         bindEventHandlers: function() {
-            var self = this;
             var isPlay = false;
-            
             U.on(playBtn, "click", function() {
                 if (isPlay) {
                     isPlay = false; 
@@ -163,50 +209,6 @@
                     camera.play();
                 }
                 return false;
-            });
-            
-            U.on(cameraBox, "click", function() {
-                camera.playFrame();
-                return false;
-            });
-            
-            var originalY, 
-                checkMousemove = false, 
-                initialDirection;
-                
-            function mousemoveHandler(e) {
-                e = e || window.event;
-                var distance = Math.abs(originalY - e.screenY);
-                if (distance > 5) {
-                    var direction = originalY - e.screenY < 0 ? "down" : "up";
-                    if (!checkMousemove || direction !== initialDirection) {
-                        if (originalY - e.screenY < 0) {
-                            initialDirection = camera.direction = "down";
-                        }
-                        else {
-                            initialDirection = camera.direction = "up";
-                        }
-                        checkMousemove = true;
-                    }
-                    var times = Math.floor(distance / 5);
-                    originalY = e.screenY;
-                    var timer = setInterval(function() {
-                        times > 0 ? camera.playFrame(): clearTimeout(timer);
-                        times--;
-                    }, 20);
-                }
-                U.preventDefault(e);
-            };
-            
-            U.on(cameraBox, "mousedown", function(e) {
-                e = e || window.event;
-                originalY = e.screenY;
-                checkMousemove = false;
-                U.on(document, "mousemove", mousemoveHandler);
-            });
-            
-            U.on(document, "mouseup", function() {
-                U.off(document, "mousemove", mousemoveHandler);
             });
         }
     }
