@@ -2,6 +2,7 @@
  * 说明：
  * 为了方便查看，业务逻辑和封装的类库都放在了一个js里，没有拆分成多个js文件
  * 由于资源本地文件，所以没有监听图片下载完成事件，正常情况应该等图片全部加载完成之后才能控制动画
+ * author: luzhao
  */
 
 //Camera类和Util类
@@ -135,6 +136,7 @@
                 else {
                     clickFameIndex = null;
                 }
+                U.preventDefault(e);
                 U.on(document, "mousemove", mousemoveHandler);
             });
             

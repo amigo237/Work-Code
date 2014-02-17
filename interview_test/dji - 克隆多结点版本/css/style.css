@@ -15,6 +15,8 @@ html, body {
     margin: 50px auto 0px;
     overflow: hidden;
     position: relative;
+    -moz-user-select: none;
+    -webkit-user-select: none;
     cursor: url('../img/jquery.reel.cur'),move;
 }
 
@@ -23,6 +25,8 @@ html, body {
 
 .img_camera {
     float: left;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 .play {
