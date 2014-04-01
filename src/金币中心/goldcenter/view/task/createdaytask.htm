@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.datepicker.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.timepicker.addon.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui-timepicker-zh-CN.js"></script>
+<style type="text/css">
+.task_tag{ width:900px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.task_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.task_tag .tag_name{ float:left; width:150px;padding-left:20px; }
+.task_tag .tag_name span{ font-weight:bold; }
+.task_tag .tag_text{ height:30px;line-height:30px;padding:5px 10px; }
+.task_tag .tag_text span{ width:370px; }
+.task_tag .tag_text2{ float:left;width:850px;padding-left:80px; }
+.task_tag .tag_text2 span{ width:380px; }
+</style>
+</head>
+<body>
+<div class="wp">
+	<div class="view_head">
+		<div class="topbar">
+			<div class="crumbs">金币中心-每日任务-新增每日任务</div>
+			<div class="toolbtns">
+				<span>|</span>
+				<a href="javascript:;" onclick="xman_refresh();return false;">刷新</a>
+				<a href="javascript:;" onclick="xman_backto();return false;">返回</a>
+			</div>
+		</div>
+	</div>
+	<div id="view_body">
+		<div id="view_content" class="view_content">
+			<form id="xbox_daytask_form" action="/index.php?r=goldcenter/task/create1" method="post">
+				<div class="task_tag clearfix">
+					<div class="tag_name"><span>任务时间：</span></div>
+					<div class="tag_text">
+						<input type="text" id="day_task_startdate" name="startdate" style="width:200px; height:30px;">&nbsp&nbsp&nbsp 至 &nbsp&nbsp&nbsp   
+						<input type="text" id="day_task_enddate" name="enddate" style="width:200px; height:30px;">
+					</div>
+				</div>
+				<div class="task_tag clearfix">
+					<div class="tag_name"><span>活动任务：</span></div>
+					<div class="tag_text">
+					<input type="checkbox" id="select_activity" tasklistbox="activity_tasklist_box" maxlength="100" onclick="xbox_set_daytask(this);"/>
+					</div>
+					<div class="tag_text2" id="activity_tasklist_box" style="display:none">
+					{foreach key=seqid item=taskname from=$activity_tasklist}
+						<span><input type="checkbox" name="tasklist[]" value="{$seqid}" maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div class="task_tag clearfix">
+					<div class="tag_name"><span>特殊任务：</span></div>
+					<div class="tag_text">
+					<input type="checkbox" id="select_special" tasklistbox="special_tasklist_box" maxlength="100" onclick="xbox_set_daytask(this);"/>
+					</div>
+					<div class="tag_text2" id="special_tasklist_box" style="display:none">
+					{foreach key=seqid item=taskname from=$special_tasklist}
+						<span><input type="checkbox" name="tasklist[]" value="{$seqid}" maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div class="task_tag clearfix">
+					<div class="tag_name"><span>新增任务：</span></div>
+					<div class="tag_text">
+					<input type="checkbox" id="select_normal" tasklistbox="normal_tasklist_box" maxlength="100" onclick="xbox_set_daytask(this);"/>
+					</div>
+					<div class="tag_text2" id="normal_tasklist_box" style="display:none">
+					{foreach key=seqid item=taskname from=$normal_tasklist}
+						<span><input type="checkbox" name="tasklist[]" value="{$seqid}" maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div class="task_tag clearfix">
+					<div class="tag_name"><span>常规任务：</span></div>
+					<div class="tag_text">
+						<select style="font-size:15px; width:200px; text-align:center; height:25px;" name="randnum">
+							<option value=2>随机 2 个</option>
+							<option value=3>随机 3 个</option>
+							<option value=4 selected>随机 4 个</option>
+							<option value=5>随机 5 个</option>
+						</select>
+					</div>
+					</div>
+				</div>
+				<div style="width:900px;text-align:center;">
+					<a href="javascript:;" style="display:inline-block;width:40%;margin-right:20px;color:#fff;" onclick="xbox_save();return false;" class="a_btn btn_yellow">保存</a>
+					<a href="javascript:;" style="display:inline-block;width:40%;color:#fff;" onclick="xbox_reset();return false;" class="a_btn btn_yellow">重置</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="view_foot"></div>
+</div>
+</body>
+<script type="text/javascript">
+{literal}
+var tips_datetimepicker_cfg = {dateFormat: "yy-mm-dd"};
+jQuery('#day_task_startdate').datepicker(tips_datetimepicker_cfg);
+jQuery('#day_task_enddate').datepicker(tips_datetimepicker_cfg);
+var result_info = ['','每日任务新增成功！','每日任务添加错误，请重新添加！','每日任务新增失败！','每日任务被重复添加，请查看每日任务！','任务开始时间大于任务结束时间，请重新确认！','时间长度大于一个星期，请重新确认！','开始时间小于当前时间，请重新选择！','常规任务互斥过多，请联系管理员！'];
+var xman_backto = function(){
+	xman_redirect("/index.php?r=goldcenter/task/index");
+}
+var xbox_reset = function(){
+	xman_refresh();
+}
+var xbox_set_daytask = function(t){
+	var tasklistbox = t.getAttribute("tasklistbox");
+	var box = jQuery("#"+tasklistbox);
+	if(jQuery(t).attr("checked") == "checked"){
+		box.show();
+	}else{
+		box.hide();
+		var tasks = box.find("input").each(function(i){
+			jQuery(this).attr("checked", false); 
+		});
+	}
+}
+var xbox_save = function(){
+	var startdate = document.getElementById("day_task_startdate").value.trim();
+	if(startdate == ''){
+		alert('请选择任务开始时间');
+		return false;
+	}
+	var enddate = document.getElementById("day_task_enddate").value.trim();
+	if(enddate == ''){
+		alert('请选择任务结束时间');
+		return false;
+	}
+	if(jQuery("#select_activity").attr("checked") == "checked"){
+		var tasks = document.getElementById("activity_tasklist_box").getElementsByTagName("input");
+		var tn = 0;
+		for(var i=0;i<tasks.length;i++){
+			if(tasks.item(i).checked){
+				tn ++;	
+			}
+		}
+		if(tn == 0){
+			alert('请选择活动任务');
+			return false;
+		}
+	}
+	if(jQuery("#select_special").attr("checked") == "checked"){
+		var tasks = document.getElementById("special_tasklist_box").getElementsByTagName("input");
+		var tn = 0;
+		for(var i=0;i<tasks.length;i++){
+			if(tasks.item(i).checked){
+				tn ++;	
+			}
+		}
+		if(tn == 0){
+			alert('请选择特殊任务');
+			return false;
+		}
+	}
+	if(jQuery("#select_normal").attr("checked") == "checked"){
+		var tasks = document.getElementById("normal_tasklist_box").getElementsByTagName("input");
+		var tn = 0;
+		for(var i=0;i<tasks.length;i++){
+			if(tasks.item(i).checked){
+				tn ++;	
+			}
+		}
+		if(tn == 0){
+			alert('请选择常规任务');
+			return false;
+		}
+	}
+
+	if(confirm("确定新增该每日任务吗？")){
+		document.getElementById("xbox_daytask_form").submit();
+	}
+}
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

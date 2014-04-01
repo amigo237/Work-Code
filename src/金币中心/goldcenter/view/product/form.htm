@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.tag_title { width:900px;height:60px;line-height:60px;margin:0 auto;overflow:hidden; border:1px solid #92E2FD;background-color: #DEF2FE;}
+.tag_title a{ display:block;padding-left:20px;font-size:36px;color: #5B5B5B;text-decoration: none; }
+
+.game_tag,.game_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.game_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.game_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.game_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.game_tag .tag_name span{ font-weight:bold; }
+.game_tag .tag_options,.game_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.game_tag .tag_textarea{ float:left; height:auto;padding:5px 10px; }
+.game_tag .tag_options span { padding-right:20px; }
+.game_tag .tag_text input{ height:24px;width:500px; }
+
+.game_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.game_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs">金币中心-创建奖品</div>
+		<div class="toolbtns">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xbox_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<form id="xbox_product_info_form" action="/index.php?r=goldcenter/product/create" method="post">
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品名称：</span></div>
+			<div class="tag_text">
+				<input type="text" id="product_title_field" name="title" value="" maxlength="100"/>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品分类：</span></div>
+			<div class="tag_options">
+				<span><input id="product_category_1" type="radio" name="category" value="1" checked><label for="product_category_1">会员代金券</label></span>
+				<span><input id="product_category_2" type="radio" name="category" value="2"><label for="product_category_2">会员卡</label></span>
+				<span><input id="product_category_3" type="radio" name="category" value="3"><label for="product_category_3">牛X积分</label></span>
+				<span><input id="product_category_4" type="radio" name="category" value="4"><label for="product_category_4">实物</label></span>
+				<span><input id="product_category_5" type="radio" name="category" value="5"><label for="product_category_5">高速通道</label></span>
+				<span><input id="product_category_6" type="radio" name="category" value="6"><label for="product_category_6">电影院</label></span>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品图片：</span></div>
+			<div class="tag_options">
+				<input id="product_cover_imgurl" type="hidden" value="" name="imgurl">
+				<input type="button" onclick="xbox_upload_cover();" form_action="/index.php?r=goldcenter/product/uploadImage" value="上传" style="height:30px;width:200px;">
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>描述：</span></div>
+			<div class="tag_text">
+				<input type="text" id="product_description" name="description" value="" maxlength="100"/>
+			</div>
+		</div>
+		<div class="game_tag" style="height:auto;">
+			<div class="tag_name"><span>扩展配置：</span></div>
+			<div class="tag_textarea">
+				<textarea id="product_extra_fields" name="extra_fields" rows="4" cols="86"></textarea>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>API URL：</span></div>
+			<div class="tag_text">
+				<input type="text" id="product_external_url" name="external_url" value="" maxlength="200"/>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>API参数：</span></div>
+			<div class="tag_text">
+				<input type="text" id="product_require_params" name="require_params" value="" maxlength="100"/>
+			</div>
+		</div>
+		<div class="game_opt">
+			<div class="opt_btns">
+				<input type="button" id="game_save_btn" onclick="xbox_submit();" value="保存"/>
+				<input type="button" id="game_reset_btn" onclick="xbox_reset();" value="重置"/>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+<div id="view_foot">
+</div>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+{literal}
+var xbox_cover_setval = function(data){
+	jQuery("#product_cover_imgurl").val(data.imgurl);
+}
+
+var xbox_upload_cover = function(){
+	xman_uploader_start("/index.php?r=goldcenter/product/uploadImage", "xbox_cover_setval");
+}
+
+var xbox_backto_index = function(){
+	xman_redirect("/index.php?r=goldcenter/product/index2");
+}
+
+var result_info = ['','创建奖品成功！','创建奖品失败！'];
+var g_submiting_flag = false;
+var xbox_submit = function(){
+	if(g_submiting_flag) return false;
+	var ptitle = document.getElementById("product_title_field").value.trim();
+	if(ptitle == ''){
+		alert('请填写奖品名称');
+		return false;
+	}
+
+	var imgurl = document.getElementById("product_cover_imgurl").value.trim();
+	if(imgurl == ''){
+		alert('请上传奖品图片');
+		return false;
+	}
+
+	if(confirm("确定新增该奖品吗？")){
+		document.getElementById("xbox_product_info_form").submit();
+	}
+}
+var xbox_reset = function(){
+	if(g_submiting_flag) return false;
+	window.location.href = window.location.href.replace(/&ts=\d+/, "&ts="+(new Date()).getTime());
+}
+
+jQuery("#view_content .game_tag").mouseover(function(){
+	var _this = this;
+	var pos = xbox_get_position(_this);
+	var fieldtips = _this.getAttribute("fieldtips");
+	if(fieldtips && fieldtips!=""){
+		jQuery("#xman_form_field_tips").text(fieldtips).css({top:pos.top-45,left:pos.left+150}).show();
+	}
+}).mouseout(function(){
+	jQuery("#xman_form_field_tips").hide();
+});
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

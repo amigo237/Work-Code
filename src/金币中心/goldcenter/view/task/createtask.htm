@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.task_tag,.task_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.task_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.task_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.task_tag .tag_name{ float:left; width:140px;padding-left:20px; }
+.task_tag .tag_name span{ font-weight:bold; }
+.task_tag .tag_options,.task_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.task_tag .tag_options span { padding-right:20px; }
+.task_tag .tag_text input{ height:24px;width:500px; }
+.task_tag .tag_text2{ float:left;width:850px;padding-left:80px; }
+.task_tag .tag_text2 span{ width:380px; }
+.task_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.task_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+#xbox_taskintro_fields_panel{ position:absolute;left:150px;top:250px;background:#fff;border:1px solid #ccc; }
+.panel_head{ width:640px;height:20px;line-height:20px; }
+.panel_head a{ display:block;width:20px;height:20px;margin-left:620px;font-weight:bold;color:#000;text-decoration:none; }
+.panel_body{ width:640px;overflow:hidden;margin:10px auto;text-align:center; }
+.tag_game{ display:inline-block;height:24px;line-height:24px;font-size:16px;margin:4px;padding:3px 10px;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.tag_game a{ color: #5B5B5B;text-decoration:none; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+	<div class="view_head">
+		<div class="topbar">
+			<div class="crumbs">金币中心-任务配置-新增任务</div>
+			<div class="toolbtns">
+				<span>|</span>
+				<a href="javascript:;" onclick="xman_refresh();return false;">刷新</a>
+				<a href="javascript:;" onclick="xman_backto();return false;">返回</a>
+			</div>
+		</div>
+	</div>
+	<div id="view_body">
+		<div id="view_content" class="view_content">
+			<form id="xbox_task_form" action="/index.php?r=goldcenter/task/create2" method="post">
+				<div class="task_tag" fieldtips="任务名称必填">
+					<div class="tag_name"><span>任务名称：</span></div>
+					<div class="tag_text">
+						<input type="text" id="taskname_field" name="taskname" value="" maxlength="100"/>
+					</div>
+				</div>
+				<div class="task_tag" fieldtips="奖励金币必填">
+					<div class="tag_name"><span>奖励金币：</span></div>
+					<div class="tag_text">
+						<input type="text" id="taskcoin_field" name="taskcoin" value="" maxlength="100"/>
+					</div>
+				</div>
+				<div class="task_tag">
+					<div class="tag_name"><span>第三方认证URL：</span></div>
+					<div class="tag_text">
+						<input type="text" id="checkurl_field" name="checkurl" value="" maxlength="100"/>
+					</div>
+				</div>
+				<div class="task_tag">
+					<div class="tag_name"><span>任务类型：</span></div>
+					<div class="tag_options">
+						<span><input id="tasktype_1" type="radio" name="tasktype" value="1" checked><label for="tasktype_1">常规任务</label></span>
+						<span><input id="tasktype_2" type="radio" name="tasktype" value="2"><label for="tasktype_2">特殊任务</label></span>
+						<span><input id="tasktype_3" type="radio" name="tasktype" value="3"><label for="tasktype_3">活动任务</label></span>
+					</div>
+				</div>
+				<div class="task_tag">
+					<div class="tag_name"><span>LUA文件：</span></div>
+					<div class="tag_text">
+						<input id="luaurl_field" type="hidden" value="" name="luaurl">
+						<input type="button" onclick="xbox_upload_cover();" form_action="/index.php?r=goldcenter/task/uploadLua" value="上传" style="height:30px;width:200px;">
+					</div>
+				</div>
+				<div class="task_tag">
+					<div class="tag_name"><span>自动加载：</span></div>
+					<div class="tag_options">
+						<span><input id="autoload_1" type="radio" name="autoload" value="1"><label for="autoload_1">加载</label></span>
+						<span><input id="autoload_2" type="radio" name="autoload" value="0" checked><label for="autoload_2">不加载</label></span>
+					</div>
+				</div>
+                <div class="task_tag">
+                    <div class="tag_name"><span>反馈按钮：</span></div>
+                    <div class="tag_options">
+                        <span><input id="feedbackbtn_1" name="feedbackbtn" type="radio" value="1"><label for="feedbackbtn_1">需要</label></span>
+                        <span><input id="feedbackbtn_2" name="feedbackbtn" type="radio" value="0" checked><label for="feedbackbtn_2">不需要</label></span>
+                    </div>
+                </div>
+				<div class="task_tag" style="height:100px">
+					<div class="tag_name"><span>任务说明：</span></div>
+					<div class="tag_text">
+						<textarea id="description_field" rows="3" cols="59" name="description" value="" maxlength="200" ></textarea>
+					</div>
+				</div>
+				<div class="task_tag clearfix" id="exclusion_box">
+					<div class="tag_name">
+						<span>互斥任务：<input type="checkbox" maxlength="100" onclick="xbox_exclusion_task(this);"/></span>
+					</div>
+					<div class="tag_text2" id="tasklist_box" style="display:none;">
+					{foreach key=seqid item=taskname from=$task_list}
+						<span><input type="checkbox" name="exclusion[]" value="{$seqid}" maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div class="task_tag">
+					<div class="tag_name"><span>任务详情：</span></div>
+					<div class="tag_text">
+						<input style="width:125px; height:30px;" type="button" value="参数配置" onclick="xbox_show_taskintro_panel();"/>
+					</div>
+				</div>
+				<div id="xbox_taskintro_fields">
+				</div>
+				<div class="task_opt">				
+					<div class="opt_btns">
+						<input type="button" id="task_save_btn" onclick="xbox_submit();" value="保存"/>
+						<input type="button" id="task_reset_btn" onclick="xbox_reset();" value="重置"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="view_foot"></div>
+</div>
+<div id="xbox_taskintro_fields_panel" style="display:none;">
+	<form id="xbox_taskintro_form" action="/index.php?r=goldcenter/task/taskintroform" method="post">
+	<div class="panel_head"><a href="javascript:;" onclick="xbox_close_taskintro_panel();return false;">X</a></div>
+	<div class="panel_body">
+		<div class="task_tag">
+			<div class="tag_name"><span>任务步骤</span></div>
+			<div class="tag_options">
+				<input type="checkbox" id="taskintro_steps_ck" name="tasksteps" value="0" onclick="xbox_set_step_count();">
+				<span id="taskintro_steps_select" style="display:none;">总共
+				<select id="taskintro_steps_options" onchange="xbox_set_steps(this);">
+					<option value="2"> 2 </option>
+					<option value="3"> 3 </option>
+					<option value="4"> 4 </option>
+					<option value="5"> 5 </option>
+					<option value="6"> 6 </option>
+					<option value="7"> 7 </option>
+					<option value="8"> 8 </option>
+					<option value="9"> 9 </option>
+				</select>
+				步</span>
+			</div>
+		</div>
+		<div class="task_tag">
+			<div class="tag_name"><span>链接下载</span></div>
+			<div class="tag_options">
+				<input type="checkbox" id="taskintro_downloadurl_ck" name="downloadurl" value="0" onclick="xbox_set_download();">
+			</div>
+		</div>
+		<div class="task_opt">
+			<div class="opt_btns">
+				<input type="button" onclick="xbox_send_taskintro();" value="确定"/>
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+{literal}
+var result_info = ['','任务新增成功！','每日任务添加错误，请重新添加！','每日任务新增失败！'];
+var xman_backto = function(){
+	xman_redirect('/index.php?r=goldcenter/task/tasklist');
+}
+var xbox_set_tasklua_filename = function(data){
+	jQuery("#luaurl_field").val(data.luaurl);
+};
+var xbox_exclusion_task = function(t){
+	if(jQuery(t).attr("checked") == "checked"){
+		jQuery("#exclusion_box").attr({style:"height:250px"})
+		jQuery("#tasklist_box").show();
+	}else{
+		jQuery("#exclusion_box").attr({style:"height:40px"})
+		jQuery("#tasklist_box").hide();
+	}
+}
+var xbox_upload_cover = function(){
+	xman_start_upload("/index.php?r=goldcenter/task/uploadLua", "xbox_set_tasklua_filename");
+};
+var xbox_set_step_count = function(){
+	var ck = document.getElementById("taskintro_steps_ck");
+	if(ck.checked){
+		ck.value = jQuery("#taskintro_steps_options").val();
+		document.getElementById("taskintro_steps_select").style.display = "";
+	}else{
+		ck.value = 0;
+		document.getElementById("taskintro_steps_select").style.display = "none";
+	}
+}
+var xbox_set_download = function(){
+	var ck = document.getElementById("taskintro_downloadurl_ck");
+	if(ck.checked){
+		ck.value = 1;
+	}else{
+		ck.value = 0;
+	}
+}
+var xbox_set_steps = function(t){
+	var ck = document.getElementById("taskintro_steps_ck");
+	if(ck.checked){
+		ck.value = jQuery(t).val();
+	}
+}
+var xbox_show_taskintro_panel = function(){
+	document.getElementById("xbox_taskintro_fields_panel").style.display = "";
+}
+var xbox_close_taskintro_panel = function(){
+	document.getElementById("xbox_taskintro_fields_panel").style.display = "none";
+}
+var xbox_submit = function(){
+	var taskname = document.getElementById("taskname_field").value.trim();
+	if(taskname == ''){
+		alert('请选择任务名称');
+		return false;
+	}
+	var taskcoin = document.getElementById("taskcoin_field").value.trim();
+	if(taskcoin == ''){
+		alert('请输入奖励金币数');
+		return false;
+	}else if(!/^(0|[1-9]\d*)$/.test(taskcoin)){
+		alert("请输入非0开头的数字");
+		return false;
+	}
+	var luaurl = document.getElementById("luaurl_field").value.trim();
+	if(luaurl == ''){
+		alert('请上传LUA文件');
+		return false;
+	}
+	var description = document.getElementById("description_field").value.trim();
+	if(description == ''){
+		alert('请输入任务说明');
+		return false;
+	}
+	if(confirm("确定新增该任务吗？")){
+		document.getElementById("xbox_task_form").submit();
+	}
+}
+var xbox_reset = function(){
+	window.location.href = window.location.href.replace(/&ts=\d+/, "&ts="+(new Date()).getTime());
+}
+var xbox_send_taskintro = function(){
+	var ck1 = document.getElementById("taskintro_steps_ck").checked;
+	var ck2 = document.getElementById("taskintro_downloadurl_ck").checked;
+	if(!ck1 && !ck2) return;
+	window.parent.window.xman_show_loading();
+	jQuery("#xbox_taskintro_form").ajaxSubmit({
+		dataType: 'json',
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			if(data.status){
+				var config = data.data;
+				jQuery("#xbox_taskintro_fields").html(config.taskintro_form);
+				xbox_close_taskintro_panel();
+			}
+		}
+	});
+}
+jQuery("#view_content .task_tag").mouseover(function(){
+	var _this = this;
+	var pos = xbox_get_position(_this);
+	var fieldtips = _this.getAttribute("fieldtips");
+	if(fieldtips && fieldtips!=""){
+		jQuery("#xman_form_field_tips").text(fieldtips).css({top:pos.top-45,left:pos.left+150}).show();
+	}
+}).mouseout(function(){
+	jQuery("#xman_form_field_tips").hide();
+});
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

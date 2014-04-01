@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+<style type="text/css">
+.userinfo_tag,.userinfo_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.userinfo_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.userinfo_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.userinfo_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.userinfo_tag .tag_name span{ font-weight:bold; }
+.userinfo_tag .tag_options,.userinfo_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.userinfo_tag .tag_options span { padding-right:20px; }
+.userinfo_tag .tag_text input{ height:24px;width:500px; }
+.userinfo_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.userinfo_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+#xbox_userinfo_panel{ position:absolute;left:150px;top:150px;background:#fff;border:1px solid #ccc; }
+.panel_head{ width:640px;height:20px;line-height:20px; }
+.panel_head a{ display:block;width:20px;height:20px;margin-left:620px;font-weight:bold;color:#000;text-decoration:none; }
+.panel_body{ width:640px;overflow:hidden;margin:10px auto;text-align:center; }
+.tag_game{ display:inline-block;height:24px;line-height:24px;font-size:16px;margin:4px;padding:3px 10px;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.tag_game a{ color: #5B5B5B;text-decoration:none; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+	<div class="view_head">
+		<div class="topbar">
+			<div class="crumbs" style="width:200px;">金币中心-实物奖品</div>
+			<div class="toolbtns" style="width:640px;">
+			<span>|</span>
+			<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+			<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto();return false;">返回</a>
+			</div>
+		</div>
+	</div>
+	<div id="view_body">
+		<div id="view_content" class="view_content">
+			<div style="width:900px;margin:10px auto;text-align:center;position:relative;">{$datagrid}</div>
+		</div>
+	</div>
+	<div id="view_foot">
+		{if $pagebar}
+		<div class="pagebar" style="padding-bottom:20px;">
+			<a class="prev_btn" href="/index.php?r=goldcenter/customer/index&page_num=1">首页</a>
+			{if $pagebar['prev'] == 0}
+			<span class="prev_btn">上一页</span>
+			{else}
+			<a class="prev_btn" href="/index.php?r=goldcenter/customer/index{if $pagebar['prev'] != 0}&page_num={$pagebar['prev']}{/if}">上一页</a>
+			{/if}
+			<span class="page_info">项:[{$pagebar['data_total']}]&nbsp;&nbsp;页:[{$pagebar['cur']}/{$pagebar['total']}]</span>
+			{if $pagebar['next'] == 0}
+			<span class="next_btn">下一页</span>
+			{else}
+			<a class="next_btn" href="/index.php?r=goldcenter/customer/index{if $pagebar['next'] != 0}&page_num={$pagebar['next']}{/if}">下一页</a>
+			{/if}
+			<a class="next_btn" href="/index.php?r=goldcenter/customer/index&page_num={$pagebar['total']}">尾页</a>
+		</div>
+		{/if}
+	</div>
+</div>
+
+<div id="xbox_userinfo_panel" style="display:none;">
+	<div class="panel_head"><a href="javascript:;" onclick="xbox_close_userinfo_panel();return false;">X</a></div>
+	<div class="panel_body">
+		<div class="userinfo_tag" style="height:80px">
+			<div class="tag_name"><span>地址：</span></div>
+			<div class="tag_text">
+				<textarea rows="2" cols="60" style="width:450px" id="address" value="" maxlength="100" disabled></textarea>
+			</div>
+		</div>
+		<div class="userinfo_tag">
+			<div class="tag_name"><span>邮政编码：</span></div>
+			<div class="tag_text">
+				<input type="text" style="width:450px" id="postcode" value="" maxlength="100" disabled/>
+			</div>
+		</div>
+		<div class="userinfo_tag">
+			<div class="tag_name"><span>收货人姓名：</span></div>
+			<div class="tag_text">
+				<input type="text" style="width:450px" id="realname" value="" maxlength="100" disabled/>
+			</div>
+		</div>
+		<div class="userinfo_tag">
+			<div class="tag_name"><span>收货人电话：</span></div>
+			<div class="tag_text">
+				<input type="text" style="width:450px" id="telephone" value="" maxlength="100" disabled/>
+			</div>
+		</div>
+		<div class="userinfo_opt">
+			<div class="opt_btns">
+				<input type="button" onclick="xbox_close_userinfo_panel();" value="确定"/>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</body>
+<script type="text/javascript">
+{literal}
+
+var xman_backto = function(){
+	xman_redirect('/index.php?r=goldcenter/product/index');
+}
+
+var xbox_show_userinfo_panel = function(bizid){
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/customer/findUserinfo',
+		type:'GET',
+		dataType:'json',
+		data:{"bizid":bizid},
+		success:function(data){
+			var userinfo = data.data;
+			document.getElementById("address").value = userinfo['address'];
+			document.getElementById("postcode").value = userinfo['postcode'];
+			document.getElementById("realname").value = userinfo['realname'];
+			document.getElementById("telephone").value = userinfo['telephone'];
+			document.getElementById("xbox_userinfo_panel").style.display = "";
+		}
+	});
+}
+var xbox_close_userinfo_panel = function(){
+	document.getElementById("xbox_userinfo_panel").style.display = "none";
+}
+
+var xbox_change_status = function(bizid){
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/customer/changeStatus',
+		type: 'GET',
+		dataType: 'json',
+		data: {"bizid":bizid},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+{/literal}
+</script>
+</html>

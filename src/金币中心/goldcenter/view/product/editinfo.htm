@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.tag_title { width:900px;height:60px;line-height:60px;margin:0 auto;overflow:hidden; border:1px solid #92E2FD;background-color: #DEF2FE;}
+.tag_title a{ display:block;padding-left:20px;font-size:36px;color: #5B5B5B;text-decoration: none; }
+
+.game_tag,.game_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.game_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.game_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.game_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.game_tag .tag_name span{ font-weight:bold; }
+.game_tag .tag_options,.game_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.game_tag .tag_textarea{ float:left; height:auto;padding:5px 10px; }
+.game_tag .tag_options span { padding-right:20px; }
+.game_tag .tag_text input{ height:24px;width:500px; }
+.game_tag .tag_opt{ float:left; width:200px;padding-left:20px; }
+.game_tag .tag_opt a{ display:inline-block;font-size: 14px;color: red; }
+
+.game_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.game_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs">金币中心-创建奖品</div>
+		<div class="toolbtns">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品名称：</span></div>
+			<div class="tag_text">
+				<input type="hidden" id="product_productid_field" name="productid" value="{$product_info['productid']}" />
+				<input type="text" id="product_title_field" name="title" value="{$product_info['title']}" maxlength="100" disabled/>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品分类：</span></div>
+			<div class="tag_options">
+				<span><input id="product_category_1" type="radio" name="category" value="1" {if $product_info['category'] eq 1}checked{/if} disabled><label for="product_category_1">会员代金券</label></span>
+				<span><input id="product_category_2" type="radio" name="category" value="2" {if $product_info['category'] eq 2}checked{/if} disabled><label for="product_category_2">会员卡</label></span>
+				<span><input id="product_category_3" type="radio" name="category" value="3" {if $product_info['category'] eq 3}checked{/if} disabled><label for="product_category_3">牛X积分</label></span>
+				<span><input id="product_category_4" type="radio" name="category" value="4" {if $product_info['category'] eq 4}checked{/if} disabled><label for="product_category_4">实物</label></span>
+				<span><input id="product_category_5" type="radio" name="category" value="5" {if $product_info['category'] eq 5}checked{/if} disabled><label for="product_category_5">高速通道</label></span>
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="cover_current_value" value="{$product_info['cover']}" />
+			<div class="tag_name"><span>奖品图片：</span></div>
+			<div id="cover_options" class="tag_options">
+				<input type="button" onclick="xbox_upload_cover();" form_action="/index.php?r=goldcenter/product/uploadImage" value="上传" style="height:30px;width:200px;" disabled>
+			</div>
+			<div class="tag_opt">
+				<input type="hidden" id="cover_value" value="{$product_info['cover']}" />
+				<a id="cover_edit_btn" href="javascript:;" onclick="xbox_edit('cover');return false;">修改</a>
+				<a id="cover_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('cover');return false;">保存</a>
+				<a id="cover_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="description_current_value" value="{$product_info['description']}" />
+			<div class="tag_name"><span>描述：</span></div>
+			<div id="description_options" class="tag_text">
+				<input type="text" id="product_description" name="description" onchange="document.getElementById('description_current_value').value=this.value;" value="{$product_info['description']}" maxlength="100" disabled/>
+			</div>
+			<div class="tag_opt">
+				<input type="hidden" id="description_value" value="{$product_info['description']}" />
+				<a id="description_edit_btn" href="javascript:;" onclick="xbox_edit('description');return false;">修改</a>
+				<a id="description_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('description');return false;">保存</a>
+				<a id="description_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+			</div>
+		</div>
+		<div class="game_tag" style="height:auto;">
+			<textarea id="extra_fields_current_value" style="display:none">{$product_info['extra_fields']}</textarea>
+			<div class="tag_name"><span>扩展配置：</span></div>
+			<div id="extra_fields_options" class="tag_textarea">
+				<textarea id="product_extra_fields" name="extra_fileds" onkeyup="jQuery('#extra_fields_current_value').val(jQuery(this).val());" rows="4" cols="60" disabled>{$product_info['extra_fields']}</textarea>
+			</div>
+			<div class="tag_opt">
+				<textarea id="extra_fields_value" style="display:none">{$product_info['extra_fields']}</textarea>
+				<a id="extra_fields_edit_btn" href="javascript:;" onclick="xbox_edit('extra_fields');return false;">修改</a>
+				<a id="extra_fields_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('extra_fields');return false;">保存</a>
+				<a id="extra_fields_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="external_url_current_value" value="{$product_info['external_url']}" />
+			<div class="tag_name"><span>API URL：</span></div>
+			<div id="external_url_options" class="tag_text">
+				<input type="text" id="product_external_url" name="external_url" onchange="document.getElementById('external_url_current_value').value=this.value;" value="{$product_info['external_url']}" maxlength="200" disabled/>
+			</div>
+			<div class="tag_opt">
+				<input type="hidden" id="external_url_value" value="{$product_info['external_url']}" />
+				<a id="external_url_edit_btn" href="javascript:;" onclick="xbox_edit('external_url');return false;">修改</a>
+				<a id="external_url_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('external_url');return false;">保存</a>
+				<a id="external_url_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="require_params_current_value" value="{$product_info['require_params']}" />
+			<div class="tag_name"><span>API参数：</span></div>
+			<div id="require_params_options" class="tag_text">
+				<input type="text" id="product_require_params" name="require_params" onchange="document.getElementById('require_params_current_value').value=this.value;" value="{$product_info['require_params']}" maxlength="100" disabled/>
+			</div>
+			<div class="tag_opt">
+				<input type="hidden" id="external_url_value" value="{$product_info['require_params']}" />
+				<a id="require_params_edit_btn" href="javascript:;" onclick="xbox_edit('require_params');return false;">修改</a>
+				<a id="require_params_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('require_params');return false;">保存</a>
+				<a id="require_params_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="view_foot">
+</div>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+var g_seqid = "{$product_info['seqid']}";
+var g_saving_flag = false;
+{literal}
+var xman_backto_index = function(){
+	xman_redirect("/index.php?r=goldcenter/product/index2");
+}
+
+var xbox_cover_setval = function(data){
+	jQuery("#cover_current_value").val(data.imgurl);
+};
+
+var xbox_upload_cover = function(){
+	xman_uploader_start("/index.php?r=goldcenter/product/uploadImage", "xbox_cover_setval");
+};
+
+var result_info = ['','修改配置成功！','修改配置失败！'];
+var g_submiting_flag = false;
+var xbox_cancel = function(){
+	if(g_saving_flag) return false;
+	xman_refresh();
+}
+
+var xbox_edit = function(tag){
+	jQuery("#"+tag+"_edit_btn").hide();
+	jQuery("#"+tag+"_save_btn").show();
+	jQuery("#"+tag+"_cancel_btn").show();
+	jQuery("#"+tag+"_options").find("input").attr("disabled", false);
+	jQuery("#"+tag+"_options").find("textarea").attr("disabled", false);
+}
+
+var xbox_save = function(tag){
+	if(g_saving_flag) return false;
+	var cur_v = jQuery("#"+tag+"_current_value").val();
+	var old_v = jQuery("#"+tag+"_value").val();
+	if(cur_v == old_v){
+		return xbox_cancel(tag);
+	}
+	var data = {"seqid":g_seqid};
+	data[tag] = cur_v;
+	g_saving_flag = true;
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/saveInfo',
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				var tagdata = data.data;
+				jQuery("#"+tagdata.name+"_value").val(tagdata.value);
+				jQuery("#"+tag+"_save_btn").hide();
+				jQuery("#"+tag+"_cancel_btn").hide();
+				jQuery("#"+tag+"_edit_btn").show();
+				jQuery("#"+tag+"_options").find("input").attr("disabled", true);
+				jQuery("#"+tag+"_options").find("textarea").attr("disabled", true);
+			}
+			g_saving_flag = false;
+		}
+	});
+}
+
+jQuery("#view_content .game_tag").mouseover(function(){
+	var _this = this;
+	var pos = xbox_get_position(_this);
+	var fieldtips = _this.getAttribute("fieldtips");
+	if(fieldtips && fieldtips!=""){
+		jQuery("#xman_form_field_tips").text(fieldtips).css({top:pos.top-45,left:pos.left+150}).show();
+	}
+}).mouseout(function(){
+	jQuery("#xman_form_field_tips").hide();
+});
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

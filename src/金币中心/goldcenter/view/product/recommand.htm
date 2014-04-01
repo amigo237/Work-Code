@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs" style="width:140px;">金币中心-推荐奖品</div>
+		<div class="toolbtns" style="width:700px;">
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xbox_publish();return false;">发布</a>
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_new_product();return false;">配置奖品</a>
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<div style="width:900px;margin:10px auto;text-align:center;position:relative;">{$datagrid}</div>
+	</div>
+</div>
+<div id="view_foot">
+</div>
+</div>
+</body>
+<script type="text/javascript">
+{literal}
+
+var xman_backto_index = function(){
+	xman_redirect('/index.php?r=goldcenter/product/index');
+}
+
+var xman_new_product = function(){
+	xman_redirect('/index.php?r=goldcenter/product/recommandForm');
+}
+
+var xbox_delete_product = function(productid){
+	if(!confirm("确定要删除当前奖品配置吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/deleteRecommandData',
+		type: 'GET',
+		dataType: 'json',
+		data: {"productid":productid},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+
+var xbox_edit_product = function(productid){
+	xman_redirect('/index.php?r=goldcenter/product/recommandForm', {'productid':productid});
+}
+
+var xbox_take_priority = function(productid){
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/takeRecommandPriority',
+		type: 'GET',
+		dataType: 'json',
+		data: {"productid":productid},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			if(data.status){
+				xman_refresh();
+			}else{
+				alert(data.info);
+			}
+		}
+	});
+}
+
+var xbox_publish = function(){
+	if(!confirm("确定正式发布吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/publishRecommand',
+		type: 'GET',
+		dataType: 'json',
+		data: {"ts":(new Date()).getTime()},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+		}
+	});
+}
+{/literal}
+</script>
+</html>

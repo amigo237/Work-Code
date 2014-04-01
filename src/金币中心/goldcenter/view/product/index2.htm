@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs">金币中心-奖品</div>
+		<div class="toolbtns">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xbox_create_product();return false;">创建奖品</a>
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xbox_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<div style="width:900px;margin:10px auto;text-align:center;position:relative;">{$datagrid}</div>
+	</div>
+</div>
+<div id="view_foot">
+	{if $pagebar}
+	<div class="pagebar" style="padding-bottom:20px;">
+		<a class="prev_btn" href="/index.php?r=goldcenter/product/index2&page_num=1">首页</a>
+		{if $pagebar['prev'] == 0}
+		<span class="prev_btn">上一页</span>
+		{else}
+		<a class="prev_btn" href="/index.php?r=goldcenter/product/index2{if $pagebar['prev'] != 0}&page_num={$pagebar['prev']}{/if}">上一页</a>
+		{/if}
+		<span class="page_info">项:[{$pagebar['data_total']}]&nbsp;&nbsp;页:[{$pagebar['cur']}/{$pagebar['total']}]</span>
+		{if $pagebar['next'] == 0}
+		<span class="next_btn">下一页</span>
+		{else}
+		<a class="next_btn" href="/index.php?r=goldcenter/product/index2{if $pagebar['next'] != 0}&page_num={$pagebar['next']}{/if}">下一页</a>
+		{/if}
+		<a class="next_btn" href="/index.php?r=goldcenter/product/index2&page_num={$pagebar['total']}">尾页</a>
+	</div>
+	{/if}
+</div>
+</div>
+</body>
+<script type="text/javascript">
+{literal}
+var xbox_create_product = function(){
+	xman_redirect('/index.php?r=goldcenter/product/form');
+}
+
+var xbox_backto_index = function(){
+	xman_redirect("/index.php?r=goldcenter/product/index");
+}
+
+
+var xbox_edit_product_info = function(seqid){
+	xman_redirect('/index.php?r=goldcenter/product/editinfo', {'seqid':seqid});
+}
+
+var xbox_delete_product_info = function(seqid){
+	if(!confirm("删除奖品基础信息后，奖品相关数据配置将被删除，确定要删除当前奖品配置吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/delete',
+		type: 'GET',
+		dataType: 'json',
+		data: {"seqid":seqid},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+{/literal}
+</script>
+</html>

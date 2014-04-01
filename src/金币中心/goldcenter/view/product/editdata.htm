@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.tag_title { width:900px;height:60px;line-height:60px;margin:0 auto;overflow:hidden; border:1px solid #92E2FD;background-color: #DEF2FE;}
+.tag_title a{ display:block;padding-left:20px;font-size:36px;color: #5B5B5B;text-decoration: none; }
+
+.game_tag,.game_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.game_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.game_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.game_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.game_tag .tag_name span{ font-weight:bold; }
+.game_tag .tag_options,.game_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.game_tag .tag_textarea{ float:left; height:auto;padding:5px 10px; }
+.game_tag .tag_options span { padding-right:20px; }
+.game_tag .tag_text input{ height:24px;width:500px; }
+.game_tag .tag_opt{ float:left; width:200px;padding-left:20px; }
+.game_tag .tag_opt a{ display:inline-block;font-size: 14px;color: red; }
+
+.game_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.game_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+#product_extra_info_panel{ position:absolute;left:50px;top:100px;background:#fff;border:1px solid #ccc; }
+.panel_head{ width:900px;height:20px;line-height:20px; }
+.panel_head a{ display:block;width:20px;height:20px;margin-left:850px;font-weight:bold;color:#000;text-decoration:none; }
+.panel_body{ width:900px;overflow:hidden;margin:10px auto;text-align:center; }
+.tag_game{ display:inline-block;height:24px;line-height:24px;font-size:16px;margin:4px;padding:3px 10px;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.tag_game a{ color: #5B5B5B;text-decoration:none; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs">金币中心-创建奖品</div>
+		<div class="toolbtns">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<div class="game_tag">
+			<input type="hidden" id="category_current_value" value="{$product_config_data['category']}" />
+			<div class="tag_name"><span>奖品分类：</span></div>
+			<div id="category_options" class="tag_options">
+				<span><input id="category_1" type="radio" onclick="document.getElementById('category_current_value').value=this.value;" name="category" value="1" {if $product_config_data['category'] eq 1}checked{/if} disabled><label for="category_1">会员代金券</label></span>
+				<span><input id="category_2" type="radio" onclick="document.getElementById('category_current_value').value=this.value;" name="category" value="2" {if $product_config_data['category'] eq 2}checked{/if} disabled><label for="category_1">会员卡</label></span>
+				<span><input id="category_3" type="radio" onclick="document.getElementById('category_current_value').value=this.value;" name="category" value="3" {if $product_config_data['category'] eq 3}checked{/if} disabled><label for="category_2">牛X积分</label></span>
+				<span><input id="category_4" type="radio" onclick="document.getElementById('category_current_value').value=this.value;" name="category" value="4" {if $product_config_data['category'] eq 4}checked{/if} disabled><label for="category_3">实物</label></span>
+				<span><input id="category_5" type="radio" onclick="document.getElementById('category_current_value').value=this.value;" name="category" value="5" {if $product_config_data['category'] eq 5}checked{/if} disabled><label for="category_3">高速通道</label></span>
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="title_current_value" value="{$product_config_data['title']}" />
+			<div class="tag_name"><span>奖品名称：</span></div>
+			<div id="title_options" class="tag_text">
+				<input id="" type="text" onchange="document.getElementById('title_current_value').value=this.value;" name="title" value="{$product_config_data['title']}" maxlength="100" disabled />
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="productname_current_value" value="{$product_config_data['productname']}" />
+			<div class="tag_name"><span>发售名称：</span></div>
+			<div id="productname_options" class="tag_text">
+				<input id="" type="text" onchange="document.getElementById('productname_current_value').value=this.value;" name="title" value="{$product_config_data['productname']}" maxlength="100" disabled />
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="cost_current_value" value="{$product_config_data['cost']}" />
+			<div class="tag_name"><span>兑换金币：</span></div>
+			<div id="cost_options" class="tag_text">
+				<input id="" type="text" onchange="document.getElementById('cost_current_value').value=this.value;" name="cost" value="{$product_config_data['cost']}" maxlength="100" disabled />
+			</div>
+		</div>
+		<div class="game_tag">
+			<input type="hidden" id="daytotal_current_value" value="{$product_config_data['daytotal']}" />
+			<div class="tag_name"><span>日发放量：</span></div>
+			<div id="daytotal_options" class="tag_text">
+				<input id="" type="text" onchange="document.getElementById('daytotal_current_value').value=this.value;" name="daytotal" value="{$product_config_data['daytotal']}" maxlength="100" disabled />
+			</div>
+			<div class="tag_opt">
+				<input type="hidden" id="daytotal_value" value="{$product_config_data['daytotal']}" />
+				<a id="daytotal_edit_btn" href="javascript:;" onclick="xbox_edit('daytotal');return false;">修改</a>
+				<a id="daytotal_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('daytotal');return false;">保存</a>
+				<a id="daytotal_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+			</div>
+		</div>
+		<div class="game_tag" style="height:auto;">
+			<div class="tag_name"><span>扩展信息：</span></div>
+			<div class="tag_text">
+				<input style="height:24px;width:100px;" type="button" id="" onclick="xbox_config_extra_data();return false;" value="扩展信息修改"/>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="view_foot">
+</div>
+</div>
+<div id="product_extra_info_panel" style="display:none">
+	<form id="product_extra_info_form" action="/index.php?r=goldcenter/product/saveExtraData" method="post">
+	<input type="hidden" id="extra_info_productid" name="productid" value="" />
+	<div class="panel_head"><a href="javascript:;" onclick="xbox_close_extra_info_panel();return false;">X</a></div>
+	<div class="panel_body" id="extra_info_fields"></div>
+	</form>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+var g_productid = "{$product_config_data['productid']}";
+{literal}
+var g_saving_flag = false;
+var xman_backto_index = function(){
+	xman_redirect("/index.php?r=goldcenter/product/index");
+}
+var xbox_config_extra_data = function(){
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/editExtraInfoForm',
+		type: 'GET',
+		dataType: 'json',
+		data: {"productid":g_productid},
+		success: function(data){
+			if(data.status){
+				jQuery("#extra_info_productid").val(data.data.productid);
+				jQuery("#extra_info_fields").html(data.data.extra_form+'<div class="task_opt"><div class="opt_btns"><input type="button" style="width:100px;height:30px;line-height:30px;" onclick="xbox_save_product_extra_info();" value="保存"/></div></div>');
+				jQuery("#product_extra_info_panel").show();
+			}else{
+				alert('当前奖品无扩展配置');
+			}
+		}
+	});
+}
+var xbox_close_extra_info_panel = function(){
+	jQuery("#product_extra_info_panel").hide();
+}
+var xbox_edit = function(tag){
+	jQuery("#"+tag+"_edit_btn").hide();
+	jQuery("#"+tag+"_save_btn").show();
+	jQuery("#"+tag+"_cancel_btn").show();
+	jQuery("#"+tag+"_options").find("input").attr("disabled", false);
+}
+var xbox_cancel = function(){
+	if(g_saving_flag) return false;
+	xman_refresh();
+}
+var xbox_save_product_extra_info = function(){
+	jQuery("#product_extra_info_panel").hide();
+	jQuery("#product_extra_info_form").ajaxSubmit({
+		dataType:"json",
+		success: function(data){
+			alert(data.info);
+			if(data.status){
+				jQuery("#product_extra_info_panel").hide();
+			}
+		}
+	});
+}
+var xbox_save = function(tag){
+	if(g_saving_flag) return false;
+	var cur_v = document.getElementById(tag+"_current_value").value;
+	var old_v = document.getElementById(tag+"_value").value;
+	if(cur_v == old_v){
+		return xbox_cancel(tag);
+	}
+	var data = {"productid":g_productid};
+	data[tag] = cur_v;
+	g_saving_flag = true;
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/updatedata',
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				var tagdata = data.data;
+				document.getElementById(tagdata.name+"_value").value = tagdata.value;
+				jQuery("#"+tag+"_save_btn").hide();
+				jQuery("#"+tag+"_cancel_btn").hide();
+				jQuery("#"+tag+"_edit_btn").show();
+				jQuery("#"+tag+"_options").find("input").attr("disabled", true);
+			}
+			g_saving_flag = false;
+		}
+	});
+}
+var xbox_reset = function(){
+	if(g_submiting_flag) return false;
+	window.location.href = window.location.href.replace(/&ts=\d+/, "&ts="+(new Date()).getTime());
+}
+
+jQuery("#view_content .game_tag").mouseover(function(){
+	var _this = this;
+	var pos = xbox_get_position(_this);
+	var fieldtips = _this.getAttribute("fieldtips");
+	if(fieldtips && fieldtips!=""){
+		jQuery("#xman_form_field_tips").text(fieldtips).css({top:pos.top-45,left:pos.left+150}).show();
+	}
+}).mouseout(function(){
+	jQuery("#xman_form_field_tips").hide();
+});
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

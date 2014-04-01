@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.tag_title { width:900px;height:60px;line-height:60px;margin:0 auto;overflow:hidden; border:1px solid #92E2FD;background-color: #DEF2FE;}
+.tag_title a{ display:block;padding-left:20px;font-size:36px;color: #5B5B5B;text-decoration: none; }
+
+.game_tag,.game_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.game_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.game_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.game_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.game_tag .tag_name span{ font-weight:bold; }
+.game_tag .tag_options,.game_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.game_tag .tag_textarea{ float:left; height:auto;padding:5px 10px; }
+.game_tag .tag_options span { padding-right:20px; }
+.game_tag .tag_text input{ height:24px;width:500px; }
+
+.game_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.game_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+#product_extra_info_panel{ position:absolute;left:50px;top:100px;background:#fff;border:1px solid #ccc; }
+.panel_head{ width:900px;height:20px;line-height:20px; }
+.panel_head a{ display:block;width:20px;height:20px;margin-left:850px;font-weight:bold;color:#000;text-decoration:none; }
+.panel_body{ width:900px;overflow:hidden;margin:10px auto;text-align:center; }
+.tag_game{ display:inline-block;height:24px;line-height:24px;font-size:16px;margin:4px;padding:3px 10px;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.tag_game a{ color: #5B5B5B;text-decoration:none; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs">金币中心-创建推荐奖品</div>
+		<div class="toolbtns">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		{$formbox}
+		<div class="game_opt">
+			<div class="opt_btns">
+				<input type="button" id="game_save_btn" onclick="xbox_submit();" value="保存"/>
+				<input type="button" id="game_reset_btn" onclick="xbox_reset();" value="重置"/>
+				<span>注：【推荐名称】和【推荐图片】不填时，将沿用奖品的基本信息的相关配置。</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="view_foot">
+</div>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+var g_submiting_flag = false;
+
+var xman_backto_index = function(){
+	xman_redirect("/index.php?r=goldcenter/product/recommand");
+}
+
+var xbox_submit = function(){
+	if(g_submiting_flag) return false;
+	var productid = jQuery("#product_recommand_productid").val();
+	if(productid == ''){
+		alert('请选择奖品');
+		return false;
+	}
+	if(confirm("确定该奖品的配置吗？")){
+		window.parent.window.xman_show_loading();
+		jQuery("#product_recommand_form").ajaxSubmit({
+			dataType: 'json',
+			success: function(data){
+				window.parent.window.xman_hide_loading();
+				alert(data.info);
+				if(data.status){
+					xman_backto_index();
+				}
+			}
+		});
+	}
+}
+var xbox_reset = function(){
+	if(g_submiting_flag) return false;
+	window.location.href = window.location.href.replace(/&ts=\d+/, "&ts="+(new Date()).getTime());
+}
+</script>
+</html>

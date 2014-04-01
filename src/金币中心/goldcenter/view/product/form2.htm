@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.tag_title { width:900px;height:60px;line-height:60px;margin:0 auto;overflow:hidden; border:1px solid #92E2FD;background-color: #DEF2FE;}
+.tag_title a{ display:block;padding-left:20px;font-size:36px;color: #5B5B5B;text-decoration: none; }
+
+.game_tag,.game_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.game_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.game_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.game_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.game_tag .tag_name span{ font-weight:bold; }
+.game_tag .tag_options,.game_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.game_tag .tag_textarea{ float:left; height:auto;padding:5px 10px; }
+.game_tag .tag_options span { padding-right:20px; }
+.game_tag .tag_text input{ height:24px;width:500px; }
+
+.game_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.game_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+#product_extra_info_panel{ position:absolute;left:50px;top:100px;background:#fff;border:1px solid #ccc; }
+.panel_head{ width:900px;height:20px;line-height:20px; }
+.panel_head a{ display:block;width:20px;height:20px;margin-left:850px;font-weight:bold;color:#000;text-decoration:none; }
+.panel_body{ width:900px;overflow:hidden;margin:10px auto;text-align:center; }
+.tag_game{ display:inline-block;height:24px;line-height:24px;font-size:16px;margin:4px;padding:3px 10px;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.tag_game a{ color: #5B5B5B;text-decoration:none; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs">金币中心-创建奖品</div>
+		<div class="toolbtns">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto_index();return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<form id="xbox_product_data_form" action="/index.php?r=goldcenter/product/saveData" method="post">
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品分类：</span></div>
+			<div class="tag_text">
+				<select id="product_categories" name="category" onchange="xbox_get_products(this);" style="width:200px;height:24px;line-height:24px;font-size:14px;text-align:cneter;">
+					<option value="0">- 选择 -</option>
+					<option value="1">会员代金券</option>
+					<option value="2">会员卡</option>
+					<option value="3">牛X积分</option>
+					<option value="4">实物</option>
+					<option value="5">高速通道</option>
+					<option value="6">电影院</option>
+				</select>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>奖品名称：</span></div>
+			<div class="tag_text">
+				<select id="category_product_list" onchange="xbox_set_productname(this)" name="baseid" style="width:300px;height:24px;line-height:24px;font-size:14px;text-align:cneter;"></select>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>发售名称：</span></div>
+			<div class="tag_text">
+				<input type="text" style="width:640px;" id="product_productname" name="productname" value="" maxlength="100"/></span>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>日发放量：</span></div>
+			<div class="tag_text">
+				<input type="text" style="width:200px;" id="product_daytotal" name="daytotal" value="" maxlength="4"/></span>
+			</div>
+		</div>
+		<div class="game_tag">
+			<div class="tag_name"><span>兑换金币：</span></div>
+			<div class="tag_text">
+				<input type="text" style="width:200px;" id="product_cost" name="cost" value="" maxlength="4"/>
+			</div>
+		</div>
+		<div id="product_extra_box" class="game_tag" style="height:auto;">
+			<div class="tag_name"><span>扩展信息：</span></div>
+			<div class="tag_text">
+				<input type="hidden" id="product_extra_data_id" name="extra_info" value="" />
+				<input type="button" style="width:200px;height:30px;line-height:30px;" onclick="xbox_config_extra_data();" value="配置" /></textarea>
+			</div>
+		</div>
+		<div class="game_opt">
+			<div class="opt_btns">
+				<input type="button" id="game_save_btn" onclick="xbox_submit();" value="保存"/>
+				<input type="button" id="game_reset_btn" onclick="xbox_reset();" value="重置"/>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+<div id="view_foot">
+</div>
+</div>
+<div id="product_extra_info_panel" style="display:none;">
+	<form id="product_extra_info_form" action="/index.php?r=goldcenter/product/saveTmpExtraData" method="post">
+	<input type="hidden" id="extra_info_baseid" name="baseid" value="" />
+	<div class="panel_head"><a href="javascript:;" onclick="xbox_close_extra_info_panel();return false;">X</a></div>
+	<div class="panel_body" id="extra_info_fields"></div>
+	</form>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+var g_category_products = {$category_products};
+{literal}
+var result_info = ['','创建奖品成功！','创建奖品失败！'];
+var g_submiting_flag = false;
+
+var xman_backto_index = function(){
+	xman_redirect("/index.php?r=goldcenter/product/index");
+}
+
+var xbox_close_extra_info_panel = function(){
+	jQuery("#product_extra_info_panel").hide();
+}
+
+var xbox_config_extra_data = function(){
+	var baseid = jQuery("#category_product_list").val();
+	if(baseid == ''){
+		alert('请先选择奖品');
+		return false;
+	}
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/extraInfoForm',
+		type: 'GET',
+		dataType: 'json',
+		data: { "baseid": baseid },
+		success: function(data){
+			if(data.status){
+				jQuery("#extra_info_baseid").val(data.data.baseid);
+				jQuery("#extra_info_fields").html(data.data.extra_form+'<div class="task_opt"><div class="opt_btns"><input type="button" style="width:100px;height:30px;line-height:30px;" onclick="xbox_save_product_extra_info();" value="确定"/></div></div>');
+				jQuery("#product_extra_info_panel").show();
+			}else{
+				alert('当前奖品无扩展配置');
+			}
+		}
+	});
+}
+
+var xbox_save_product_extra_info = function(){
+	jQuery("#product_extra_info_form").ajaxSubmit({
+		dataType:"json",
+		success: function(data){
+			if(data.status){
+				jQuery("#product_extra_data_id").val(data.data.extra_data_id);
+				jQuery("#product_extra_info_panel").hide();
+			}else{
+				alert(data.info);
+			}
+		}
+	});
+}
+
+var xbox_get_products = function(t){
+	var cate = jQuery(t).val();
+	var options = [], ps, p;
+	if(cate && g_category_products[cate]){
+		ps = g_category_products[cate];
+		for(var i=0,l=ps.length; i<l; i++){
+			p = ps[i];
+			options.push('<option value="'+p.baseid+'">'+p.title+'</option>');
+		}
+	}
+	var sel = jQuery("#category_product_list");
+	sel.html(options.join(""));
+	jQuery("#product_productname").val(sel.find("option:selected").text());
+}
+
+var xbox_set_productname = function(t){
+	jQuery("#product_productname").val(jQuery(t).find("option:selected").text());
+}
+
+var xbox_submit = function(){
+	if(g_submiting_flag) return false;
+	var productid = jQuery("#category_product_list").val();
+	if(productid == ''){
+		alert('请选择奖品');
+		return false;
+	}
+	var productname = document.getElementById("product_productname").value.trim();
+	if(productname == ''){
+		alert('请输入上线奖品的发售名称');
+		return false;
+	}
+	var daytotal = document.getElementById("product_daytotal").value.trim();
+	if(daytotal == ''){
+		alert('请输入每日发放量');
+		return false;
+	}
+	if(!(/^[1-9]\d*$/.test(daytotal))){
+		alert('每日发放量输入错误，请重新输入');
+		return false;
+	}
+
+	var cost = document.getElementById("product_cost").value.trim();
+	if(cost == ''){
+		alert('请输入消费金币数');
+		return false;
+	}
+	if(!(/^[1-9]\d*$/.test(cost))){
+		alert('消费金币数输入错误，请重新输入');
+		return false;
+	}
+	if(confirm("确定该奖品的配置吗？")){
+		document.getElementById("xbox_product_data_form").submit();
+	}
+}
+var xbox_reset = function(){
+	if(g_submiting_flag) return false;
+	window.location.href = window.location.href.replace(/&ts=\d+/, "&ts="+(new Date()).getTime());
+}
+
+jQuery("#view_content .game_tag").mouseover(function(){
+	var _this = this;
+	var pos = xbox_get_position(_this);
+	var fieldtips = _this.getAttribute("fieldtips");
+	if(fieldtips && fieldtips!=""){
+		jQuery("#xman_form_field_tips").text(fieldtips).css({top:pos.top-45,left:pos.left+150}).show();
+	}
+}).mouseout(function(){
+	jQuery("#xman_form_field_tips").hide();
+});
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

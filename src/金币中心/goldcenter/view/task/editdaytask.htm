@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.datepicker.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui-i18n.min.js"></script>
+<style type="text/css">
+.task_tag{ width:900px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.task_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.task_tag .tag_name{ float:left; width:150px;padding-left:20px; }
+.task_tag .tag_name span{ font-weight:bold; }
+.task_tag .tag_text{ height:30px;line-height:30px;padding:5px 10px; }
+.task_tag .tag_text span{ width:370px; }
+.task_tag .tag_text2{ float:left;width:850px;padding-left:80px; }
+.task_tag .tag_text2 span{ width:380px; }
+</style>
+</head>
+<body>
+<div class="wp">
+	<div class="view_head">
+		<div class="topbar">
+			<div class="crumbs">金币中心-每日任务-新增每日任务</div>
+			<div class="toolbtns">
+				<span>|</span>
+				<a href="javascript:;" onclick="xman_refresh();return false;">刷新</a>
+				<a href="javascript:;" onclick="xman_backto();return false;">返回</a>
+			</div>
+		</div>
+	</div>
+	<div id="view_body">
+		<div id="view_content" class="view_content">
+			<form id="xbox_daytask_form" action="/index.php?r=goldcenter/task/update1" method="post">
+				<div class="task_tag">
+					<div class="tag_name"><span>每日任务时间：</span></div>
+					<div class="tag_text"><span>{$daytime}</span></div>
+					<input type="hidden" name="dayno" value="{$dayno}"/>
+				</div>
+				<div class="task_tag  clearfix">
+					<div class="tag_name"><span>选择活动任务：</span></div>
+					<div class="tag_text2" id="activity_tasklist_box">
+					{foreach key=seqid item=taskname from=$activity_taskinfo_list}
+						<span><input type="checkbox" name="tasklist[]" value="{$seqid}" {if in_array($seqid, $seqidlist)}checked{/if} maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div class="task_tag  clearfix">
+					<div class="tag_name"><span>选择特殊任务：</span></div>
+					<div class="tag_text2" id="special_tasklist_box">
+					{foreach key=seqid item=taskname from=$special_taskinfo_list}
+						<span><input type="checkbox" name="tasklist[]" value="{$seqid}" {if in_array($seqid, $seqidlist)}checked{/if} maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div class="task_tag  clearfix">
+					<div class="tag_name"><span>选择新增任务：</span></div>
+					<div class="tag_text2" id="normal_tasklist_box">
+					{foreach key=seqid item=taskname from=$normal_taskinfo_list}
+						<span><input type="checkbox" name="tasklist[]" value="{$seqid}" {if in_array($seqid, $seqidlist)}checked{/if} maxlength="100"/>{$taskname}</span>
+					{/foreach}
+					</div>
+				</div>
+				<div style="width:900px;text-align:center;">
+					<a href="javascript:;" style="display:inline-block;width:40%;margin-right:20px;color:#fff;" onclick="xbox_save();return false;" class="a_btn btn_yellow">保存</a>
+					<a href="javascript:;" style="display:inline-block;width:40%;color:#fff;" onclick="xbox_reset();return false;" class="a_btn btn_yellow">重置</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="view_foot"></div>
+</div>
+</body>
+<script type="text/javascript">
+{literal}
+var result_info = ['','每日任务修改成功！','每日任务修改错误，请重新修改！','每日任务修改失败！'];
+var xman_backto = function(){
+	xman_redirect("/index.php?r=goldcenter/task/index");
+}
+var xbox_reset = function(){
+	xman_refresh();
+}
+var xbox_save = function(){
+	var tasks = document.getElementById("normal_tasklist_box").getElementsByTagName("input");
+	var tn = 0;
+	for(var i=0;i<tasks.length;i++){
+		if(tasks.item(i).checked){
+			tn ++;	
+		}
+	}
+	if(tn == 0){
+		alert('每日至少配置一项每日任务');
+		return false;
+	}	
+	if(confirm("确定修改该每日任务吗？")){
+		document.getElementById("xbox_daytask_form").submit();
+	}
+}
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>

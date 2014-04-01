@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs" style="width:140px;">金币中心-奖品</div>
+		<div class="toolbtns" style="width:760px;">
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xbox_generate();return false;">生成</a>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xbox_publish();return false;">发布</a>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xbox_customer_product();return false;">实物奖品</a>
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xbox_product_list();return false;">奖品管理</a>
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_new_product();return false;">配置新奖品</a>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_recommand_product();return false;">配置推荐奖品</a>
+		<span>|</span>
+		<a class="refreshbtn" href="javascript:;" class="view_back_btn" onclick="xman_refresh();return false;">刷新</a>
+		<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="window.parent.window.xman_backto(window.parent.window.g_current_space_pos);return false;">返回</a>
+		</div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content">
+		<div style="width:900px;margin:10px auto;text-align:center;position:relative;">{$datagrid}</div>
+	</div>
+</div>
+<div id="view_foot">
+	{if $pagebar}
+	<div class="pagebar" style="padding-bottom:20px;">
+		<a class="prev_btn" href="/index.php?r=goldcenter/product/index&page_num=1">首页</a>
+		{if $pagebar['prev'] == 0}
+		<span class="prev_btn">上一页</span>
+		{else}
+		<a class="prev_btn" href="/index.php?r=goldcenter/product/index{if $pagebar['prev'] != 0}&page_num={$pagebar['prev']}{/if}">上一页</a>
+		{/if}
+		<span class="page_info">项:[{$pagebar['data_total']}]&nbsp;&nbsp;页:[{$pagebar['cur']}/{$pagebar['total']}]</span>
+		{if $pagebar['next'] == 0}
+		<span class="next_btn">下一页</span>
+		{else}
+		<a class="next_btn" href="/index.php?r=goldcenter/product/index{if $pagebar['next'] != 0}&page_num={$pagebar['next']}{/if}">下一页</a>
+		{/if}
+		<a class="next_btn" href="/index.php?r=goldcenter/product/index&page_num={$pagebar['total']}">尾页</a>
+	</div>
+	{/if}
+</div>
+</div>
+</body>
+<script type="text/javascript">
+{literal}
+
+var xbox_customer_product = function(){
+	xman_redirect('/index.php?r=goldcenter/customer/index');
+}
+
+var xman_recommand_product = function(){
+	xman_redirect('/index.php?r=goldcenter/product/recommand');
+}
+
+var xbox_product_list = function(){
+	xman_redirect('/index.php?r=goldcenter/product/index2');
+}
+
+var xman_new_product = function(){
+	xman_redirect('/index.php?r=goldcenter/product/form2');
+}
+
+var xbox_delete_product_data = function(productid){
+	if(!confirm("确定要删除当前奖品配置吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/deleteData',
+		type: 'GET',
+		dataType: 'json',
+		data: {"productid":productid},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+
+var xbox_edit_product_data = function(productid){
+	xman_redirect('/index.php?r=goldcenter/product/editdata', {'productid':productid});
+}
+
+var xbox_disable_product = function(productid, status){
+	var status_info = ["上线","下线"];
+	if(!confirm("确定要"+status_info[status]+"当前奖品配置吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/disable',
+		type: 'GET',
+		dataType: 'json',
+		data: {"productid":productid,"status":status},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+var xbox_take_priority = function(productid){
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/takePriority',
+		type: 'GET',
+		dataType: 'json',
+		data: {"productid":productid},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			if(data.status){
+				xman_refresh();
+			}else{
+				alert(data.info);
+			}
+		}
+	});
+}
+
+var xbox_generate = function(){
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/generate',
+		type: 'GET',
+		dataType: 'json',
+		data: {"ts":(new Date()).getTime()},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+		}
+	});
+}
+var xbox_publish = function(){
+	if(!confirm("确定正式发布吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/product/publish',
+		type: 'GET',
+		dataType: 'json',
+		data: {"ts":(new Date()).getTime()},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+		}
+	});
+}
+{/literal}
+</script>
+</html>

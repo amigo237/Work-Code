@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.task_tag{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.task_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.task_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.task_tag .tag_name{ float:left; width:120px;padding-left:20px; }
+.task_tag .tag_name span{ font-weight:bold; }
+.task_tag .tag_options,.task_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.task_tag .tag_options span { padding-right:20px; }
+.task_tag .tag_text input{ height:24px;width:500px; }
+.task_tag .tag_opt{ float:left; width:200px;padding-left:20px; }
+.task_tag .tag_opt a{ display:inline-block;font-size: 14px;color: red; }
+.task_opt .opt_btns{ height:30px;padding:4px 10px 4px 120px;text-align:center; }
+.task_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+</style>
+</head>
+<body>
+<div class="wp">
+	<div class="view_head">
+		<div class="topbar">
+			<div class="crumbs">金币中心-任务配置-修改任务信息</div>
+			<div class="toolbtns">
+			<span>|</span>
+			<a class="backbtn" href="javascript:;" class="view_back_btn" onclick="xman_backto();return false;">返回</a>
+			</div>
+		</div>
+	</div>
+	<div id="view_body">
+		<div id="view_content" class="view_content">
+			<div class="task_tag" fieldtips="任务名称必填">
+				<input type="hidden" id="taskname_current_value" value="{$task_info['taskname']}" />
+				<div class="tag_name"><span>任务</span></div>
+				<div id="taskname_options" class="tag_text">
+					<input id="" type="text" onchange="document.getElementById('taskname_current_value').value=this.value;" name="taskname" value="{$task_info['taskname']}" maxlength="100" disabled />
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="taskname_value" value="{$task_info['taskname']}" />
+					<a id="taskname_edit_btn" href="javascript:;" onclick="xbox_edit('taskname');return false;">修改</a>
+					<a id="taskname_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('taskname');return false;">保存</a>
+					<a id="taskname_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag" fieldtips="奖励金币数必填">
+				<input type="hidden" id="taskcoin_current_value" value="{$task_info['taskcoin']}" />
+				<div class="tag_name"><span>奖励金币</span></div>
+				<div id="taskcoin_options" class="tag_text">
+					<input id="" type="text" onchange="document.getElementById('taskcoin_current_value').value=this.value;" name="taskcoin" value="{$task_info['taskcoin']}" maxlength="100" disabled />
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="taskcoin_value" value="{$task_info['taskcoin']}" />
+					<a id="taskcoin_edit_btn" href="javascript:;" onclick="xbox_edit('taskcoin');return false;">修改</a>
+					<a id="taskcoin_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('taskcoin');return false;">保存</a>
+					<a id="taskcoin_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag">
+				<input type="hidden" id="checkurl_current_value" value="{$task_info['checkurl']}" />
+				<div class="tag_name"><span>第三方认证URL</span></div>
+				<div id="checkurl_options" class="tag_text">
+					<input id="" type="text" onchange="document.getElementById('checkurl_current_value').value=this.value;" name="checkurl" value="{$task_info['checkurl']}" maxlength="100" disabled />
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="checkurl_value" value="{$task_info['checkurl']}" />
+					<a id="checkurl_edit_btn" href="javascript:;" onclick="xbox_edit('checkurl');return false;">修改</a>
+					<a id="checkurl_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('checkurl');return false;">保存</a>
+					<a id="checkurl_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag">
+				<input type="hidden" id="tasktype_current_value" value="{$task_info['tasktype']}" />
+				<div class="tag_name"><span>任务类型：</span></div>
+				<div id="tasktype_options" class="tag_options">
+				<span><input id="tasktype_1" type="radio" onclick="document.getElementById('tasktype_current_value').value=this.value;" name="tasktype" value="1" {if $task_info['tasktype'] eq 1}checked{/if} disabled><label for="tasktype_1">常规任务</label></span>
+				<span><input id="tasktype_2" type="radio" onclick="document.getElementById('tasktype_current_value').value=this.value;" name="tasktype" value="2" {if $task_info['tasktype'] eq 2}checked{/if} disabled><label for="tasktype_2">特殊任务</label></span>
+				<span><input id="tasktype_3" type="radio" onclick="document.getElementById('tasktype_current_value').value=this.value;" name="tasktype" value="3" {if $task_info['tasktype'] eq 3}checked{/if} disabled><label for="tasktype_3">活动任务</label></span>
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="tasktype_value" value="{$task_info['tasktype']}" />
+					<a id="tasktype_edit_btn" href="javascript:;" onclick="xbox_edit('tasktype');return false;">修改</a>
+					<a id="tasktype_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('tasktype');return false;">保存</a>
+					<a id="tasktype_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag">
+				<input type="hidden" id="luaurl_current_value" value="{$task_info['luaurl']}" />
+				<div class="tag_name"><span>LUA文件：</span></div>
+				<div id="luaurl_options" class="tag_text">
+					<input type="button" onclick="xbox_upload_cover();" form_action="/index.php?r=goldcenter/task/uploadLua" value="上传" style="height:30px;width:200px;" disabled>
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="luaurl_value" value="{$task_info['luaurl']}" />
+					<a href="{$task_info['luaurl']}" >下载LUA文件</a>
+					<a id="luaurl_edit_btn" href="javascript:;" onclick="xbox_edit('luaurl');return false;">修改</a>
+					<a id="luaurl_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('luaurl');return false;">保存</a>
+					<a id="luaurl_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag">
+				<input type="hidden" id="autoload_current_value" value="{$task_info['autoload']}" />
+				<div class="tag_name"><span>自动加载：</span></div>
+				<div id="autoload_options" class="tag_options">
+				<span><input id="autoload_1" type="radio" onclick="document.getElementById('autoload_current_value').value=this.value;" name="autoload" value="1" {if $task_info['autoload'] eq 1}checked{/if} disabled><label for="autoload_1">加载</label></span>
+				<span><input id="autoload_2" type="radio" onclick="document.getElementById('autoload_current_value').value=this.value;" name="autoload" value="0" {if $task_info['autoload'] eq 0}checked{/if} disabled><label for="autoload_2">不加载</label></span>
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="autoload_value" value="{$task_info['autoload']}" />
+					<a id="autoload_edit_btn" href="javascript:;" onclick="xbox_edit('autoload');return false;">修改</a>
+					<a id="autoload_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('autoload');return false;">保存</a>
+					<a id="autoload_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+            <div class="task_tag">
+				<input type="hidden" id="feedbackbtn_current_value" value="{$task_info['feedbackbtn']}" />
+				<div class="tag_name"><span>反馈按钮：</span></div>
+				<div id="feedbackbtn_options" class="tag_options">
+				<span><input id="feedbackbtn_1" type="radio" onclick="document.getElementById('feedbackbtn_current_value').value=this.value;" name="feedbackbtn" value="1" {if $task_info['feedbackbtn'] eq 1}checked{/if} disabled><label for="feedbackbtn_1">需要</label></span>
+				<span><input id="feedbackbtn_2" type="radio" onclick="document.getElementById('feedbackbtn_current_value').value=this.value;" name="feedbackbtn" value="0" {if $task_info['feedbackbtn'] eq 0}checked{/if} disabled><label for="feedbackbtn_2">不需要</label></span>
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="feedbackbtn_value" value="{$task_info['feedbackbtn']}" />
+					<a id="feedbackbtn_edit_btn" href="javascript:;" onclick="xbox_edit('feedbackbtn');return false;">修改</a>
+					<a id="feedbackbtn_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('feedbackbtn');return false;">保存</a>
+					<a id="feedbackbtn_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag" style="height:100px">
+				<input type="hidden" id="description_current_value" value="{$taskintro['description']}" />
+				<div class="tag_name"><span>任务说明：</span></div>
+				<div id="description_options" class="tag_text">
+					<textarea id="" rows="3" cols="59" onchange="document.getElementById('description_current_value').value=this.value;" name="description" value="{$taskintro['description']}" maxlength="200" disabled >{$taskintro['description']}</textarea>
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="description_value" value="{$taskintro['description']}" />
+					<a id="description_edit_btn" href="javascript:;" onclick="xbox_edit('description');return false;">修改</a>
+					<a id="description_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('description');return false;">保存</a>
+					<a id="description_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			<div class="task_tag" style="height:300px;overflow-y:auto;">
+				<input type="hidden" id="exclusion_current_value" value="{$task_info['exclusion']}" />
+				<div class="tag_name"><span>互斥任务：</span></div>
+				<div class="tag_opt">
+					<input type="hidden" id="exclusion_value" value="{$task_info['exclusion']}" />
+					<a id="exclusion_edit_btn" href="javascript:;" onclick="xbox_edit('exclusion');return false;">修改</a>
+					<a id="exclusion_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('exclusion');return false;">保存</a>
+					<a id="exclusion_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+				<div id="exclusion_options" class="tag_options" style="float:left;width:850px;padding-left:80px;">
+					{foreach key=seqid item=taskname from=$task_list}
+						<span style="width:380px;"><input type="checkbox" onclick="xbox_change_exclusion();" name="exclusion[]" value="{$seqid}" {if in_array($seqid, $exclusion_task_list)}checked{/if} disabled maxlength="100"/>{$taskname}</span>
+					{/foreach}
+				</div>
+			</div>
+			{if $has_steps}
+				{foreach key=stepnum item=taskstep from=$taskintro['steps']}
+				<div class="task_tag">
+					<input type="hidden" id="taskstep{$stepnum}_current_value" value="{$taskstep}" />
+					<div class="tag_name"><span>步骤{$stepnum+1}：</span></div>
+					<div id="taskstep{$stepnum}_options" class="tag_text">
+						<input id="" type="text" onchange="document.getElementById('taskstep{$stepnum}_current_value').value=this.value;" name="taskstep{$stepnum}" value="{$taskstep}" maxlength="100" disabled />
+					</div>
+					<div class="tag_opt">
+						<input type="hidden" id="taskstep{$stepnum}_value" value="{$taskstep}" />
+						<a id="taskstep{$stepnum}_edit_btn" href="javascript:;" onclick="xbox_edit('taskstep{$stepnum}');return false;">修改</a>
+						<a id="taskstep{$stepnum}_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('taskstep{$stepnum}');return false;">保存</a>
+						<a id="taskstep{$stepnum}_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+					</div>
+				</div>
+				{/foreach}
+			{/if}
+			{if $has_downloadurl}
+			<div class="task_tag">
+				<input type="hidden" id="downloadurl_current_value" value="{$taskintro['downloadurl']}" />
+				<div class="tag_name"><span>下载地址：</span></div>
+				<div id="downloadurl_options" class="tag_text">
+					<input id="" type="text" onchange="document.getElementById('downloadurl_current_value').value=this.value;" name="downloadurl" value="{$taskintro['downloadurl']}" maxlength="100" disabled />
+				</div>
+				<div class="tag_opt">
+					<input type="hidden" id="downloadurl_value" value="{$taskintro['downloadurl']}" />
+					<a id="downloadurl_edit_btn" href="javascript:;" onclick="xbox_edit('downloadurl');return false;">修改</a>
+					<a id="downloadurl_save_btn" style="display:none;" href="javascript:;" onclick="xbox_save('downloadurl');return false;">保存</a>
+					<a id="downloadurl_cancel_btn" style="display:none;" href="javascript:;" onclick="xbox_cancel();return false;">取消</a>
+				</div>
+			</div>
+			{/if}
+		</div>
+	</div>
+	<div id="view_foot"></div>
+</div>
+</body>
+<script type="text/javascript">
+var g_seqid = "{$task_info['seqid']}";
+{literal}
+var g_saving_flag = false;
+var xman_backto = function(){
+	xman_redirect('/index.php?r=goldcenter/task/tasklist');
+}
+var xbox_edit = function(tag){
+	jQuery("#"+tag+"_edit_btn").hide();
+	jQuery("#"+tag+"_save_btn").show();
+	jQuery("#"+tag+"_cancel_btn").show();
+	jQuery("#"+tag+"_options").find("input").attr("disabled", false);
+	jQuery("#"+tag+"_options").find("textarea").attr("disabled", false);
+}
+var xbox_cancel = function(){
+	if(g_saving_flag) return false;
+	xman_refresh();
+}
+var xbox_change_exclusion = function(){
+	var exclusion = document.getElementsByName('exclusion[]');
+	var ex_list = new Array();
+	for(var i = 0; i < exclusion.length; i++){
+		if(exclusion[i].checked){
+			ex_list.push(exclusion[i].value);
+		}
+	}
+	document.getElementById('exclusion_current_value').value= ex_list;
+}
+var xbox_set_tasklua_filename = function(data){
+	jQuery("#luaurl_current_value").val(data.luaurl);
+};
+
+var xbox_upload_cover = function(){
+	xman_start_upload("/index.php?r=goldcenter/task/uploadLua", "xbox_set_tasklua_filename");
+};
+var xbox_save = function(tag){
+	if(g_saving_flag) return false;
+	var cur_v = document.getElementById(tag+"_current_value").value;
+	var old_v = document.getElementById(tag+"_value").value;
+	if(cur_v == old_v){
+		return xbox_cancel(tag);
+	}
+	var data = {"seqid":g_seqid};
+	data[tag] = cur_v;
+	g_saving_flag = true;
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/update2',
+		type: 'POST',
+		dataType: 'json',
+		data: data,
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				var tagdata = data.data;
+				document.getElementById(tagdata.name+"_value").value = tagdata.value;
+				jQuery("#"+tag+"_save_btn").hide();
+				jQuery("#"+tag+"_cancel_btn").hide();
+				jQuery("#"+tag+"_edit_btn").show();
+				jQuery("#"+tag+"_options").find("input").attr("disabled", true);
+				jQuery("#"+tag+"_options").find("textarea").attr("disabled", true);
+			}
+			g_saving_flag = false;
+		}
+	});
+}
+{/literal}
+</script>
+</html>

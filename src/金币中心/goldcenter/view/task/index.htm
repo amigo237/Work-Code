@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.css" />
+<link rel="stylesheet" href="/static/jui/css/base/jquery.ui.datepicker.css" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<script type="text/javascript" src="/static/js/gamebox/game.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/jui/js/jquery-ui-i18n.min.js"></script>
+{literal}
+<style type="text/css">
+	.topbar {overflow: visible;}
+#time_select_box{position:absolute;left:225px;top:175px;z-index:2013;width:510px;padding:5px;background:#fff;border:1px solid #ccc;}
+#time_select_box .form_row{width:500px;}
+#time_select_box .row_name{width:175px;}
+
+</style>
+{/literal}
+</head>
+<body>
+<div class="wp">
+<div class="view_head">
+	<div class="topbar">
+		<div class="crumbs" style="width:160px">金币中心-每日任务</div>
+		<div class="toolbtns" style="width:730px">
+			<a href="javascript:;"  onclick="xbox_tasktips();return false;" >任务Tips配置</a>
+			<span>|</span>
+			<a href="javascript:;"  onclick="xbox_createdaytask();return false;" >新增每日任务</a>
+			{if $is_admin}
+			<span>|</span>
+			<a href="javascript:;" onclick="xbox_totasklist();return false;" >任务配置</a>
+			{/if}
+			<span>|</span>
+			<a href="javascript:;" onclick="xbox_generate();return false;" >生成任务</a>
+			<a href="javascript:;" onclick="xbox_publish();return false;" >发布任务</a>
+			<span>|</span>
+			<a href="javascript:;" onclick="xman_refresh();return false;">刷新</a>
+			<a href="javascript:;" onclick="window.parent.window.xman_backto(window.parent.window.g_current_space_pos);return false;">返回</a>
+		</div>
+		<div id="suggest_box"></div>
+	</div>
+</div>
+<div id="view_body">
+	<div id="view_content" class="view_content clearfix">
+		{foreach item=content from=$daytasks_info}
+		<div style="font-size:15px;margin-top:30px;">
+			<table align="center" style="width:600px;border:1px solid #ccc;">
+				<tr><th colspan="3" style="text-align:left;background:#ACD6FF;color:#fff;">{$content['dayno2']}日</th></tr>
+				{foreach item=tasks from=$content['tasklist2']}
+				<tr>
+				<td style="width:125px;overflow:hidden;">{$tasks['taskid']}</td>
+				<td style="width:350px;overflow:hidden;">【<span style="color:{$tasktype[$tasks['tasktype']]['color']}">{$tasktype[$tasks['tasktype']]['name']}</span>】{$tasks['taskname']}</td>
+				<td style="width:75px">{$tasks['taskcoin']}金币</td>
+				</tr>
+				{/foreach}
+				<tr>
+					<td colspan="3" style="text-align:left;background:#ACD6FF;">发布人：{$content['publish_user']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布时间：{$content['publish_time']}</td>
+				</tr>
+				<tr>
+				<td style="background:#ACD6FF;">发布状态：{if $content['status'] eq 1}已发布{else}未发布{/if}</td>
+				<td colspan="2" style="text-align:right;background:#ACD6FF;padding-right:25px;">
+					{if $is_admin eq 1}
+						{if $content['dayno'] ge $today}
+							<a href="javascript:;" onclick="xbox_editdaytask('{$content['dayno']}');return false;" >修改</a>
+							<a href="javascript:;" onclick="xbox_generatedaytask('{$content['dayno']}');return false;" >生成</a>
+							<a href="javascript:;" onclick="xbox_publishdaytask('{$content['dayno']}');return false;" >发布</a>
+						{/if}
+					{else}
+						{if $content['status'] eq "0"}
+							<a href="javascript:;" onclick="xbox_editdaytask('{$content['dayno']}');return false;" >修改</a>
+							<a href="javascript:;" onclick="xbox_deletedaytask('{$content['dayno']}');return false;" >删除</a>
+						{else}
+							{if $content['dayno'] gt $today}
+								<a href="javascript:;" onclick="xbox_editdaytask('{$content['dayno']}');return false;" >修改</a>
+							{/if}
+						{/if}
+					{/if}
+				</td>
+				</tr>
+			</table>
+		</div>
+		{/foreach}
+	</div>
+</div>
+<div id="view_foot">
+	{if !empty($pagebar)}
+	<div class="pagebar" style="padding-bottom:20px;">
+		<a class="prev_btn" href="/index.php?r=goldcenter/task/index&page_num=1">首页</a>
+		{if $pagebar['prev'] == 0}
+		<span class="prev_btn">上一页</span>
+		{else}
+		<a class="prev_btn" href="/index.php?r=goldcenter/task/index{if $pagebar['prev'] != 0}&page_num={$pagebar['prev']}{/if}">上一页</a>
+		{/if}
+		<span class="page_info">项:[{$pagebar['data_total']}]&nbsp;&nbsp;页:[{$pagebar['cur']}/{$pagebar['total']}]</span>
+		{if $pagebar['next'] == 0}
+		<span class="next_btn">下一页</span>
+		{else}
+		<a class="next_btn" href="/index.php?r=goldcenter/task/index{if $pagebar['next'] != 0}&page_num={$pagebar['next']}{/if}">下一页</a>
+		{/if}
+		<a class="next_btn" href="/index.php?r=goldcenter/task/index&page_num={$pagebar['total']}">尾页</a>
+	</div>
+	{/if}
+</div>
+</div>
+</body>
+<script type="text/javascript">
+{literal}
+
+var xbox_tasktips = function(){
+	xman_redirect('/index.php?r=goldcenter/task/tasktips');
+}
+var xbox_createdaytask = function(){
+	xman_redirect('/index.php?r=goldcenter/task/createdaytask');
+}
+var xbox_totasklist = function(){
+	xman_redirect('/index.php?r=goldcenter/task/tasklist');
+}
+var xbox_editdaytask = function(dayno){
+	xman_redirect('/index.php?r=goldcenter/task/editdaytask', {"dayno":dayno});
+}
+var xbox_deletedaytask = function(dayno){
+	if(!confirm("确定要删除当前每日任务吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/delete1',
+		type: 'GET',
+		dataType: 'json',
+		data: {"dayno":dayno},
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+var xbox_generatedaytask = function(dayno){
+	if(!confirm("确定要生成每日任务吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/generate2&dayno='+dayno,
+		type: 'GET',
+		dataType: 'json',
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+var xbox_generate = function(){
+	if(!confirm("确定要生成每日任务吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/generate',
+		type: 'GET',
+		dataType: 'json',
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+var xbox_publishdaytask = function(dayno){
+	if(!confirm("确定要发布"+dayno+"的任务吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/adminPublish&dayno='+dayno,
+		type: 'GET',
+		dataType: 'json',
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+var xbox_publish = function(){
+	if(!confirm("确定要发布每日任务吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/publish',
+		type: 'GET',
+		dataType: 'json',
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+{/literal}
+</script>
+</html>

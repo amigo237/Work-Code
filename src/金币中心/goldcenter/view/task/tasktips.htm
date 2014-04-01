@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title></title>
+<link rel="stylesheet" href="/static/css/view.css?v=123133" />
+<script type="text/javascript" src="/static/js/jquery.js"></script>
+<script type="text/javascript" src="/static/js/xman.js?v=12313123"></script>
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<style type="text/css">
+.task_tag,.task_opt{ width:900px;height:40px;line-height:40px;margin:5px auto;overflow:hidden;border:1px solid #92E2FD;background-color: #DEF2FE; }
+.task_tag:after{ content:".";display:block;clear:both;height:0px;visibility:hidden; }
+.task_tag span{ display:inline-block;font-size: 16px;color: #5B5B5B;  }
+.task_tag .tag_name{ float:left; width:160px;padding-left:20px; }
+.task_tag .tag_name span{ font-weight:bold; }
+.task_tag .tag_options,.task_tag .tag_text{ float:left; height:30px;line-height:30px;padding:5px 10px; }
+.task_tag .tag_options span { padding-right:20px; }
+.task_tag .tag_text input{ height:24px;width:500px; }
+.task_opt .opt_btns{ height:42px;padding:4px 10px 4px 120px;text-align:center; }
+.task_opt .opt_btns input{ height:30px;line-height:30px;width:100px; }
+
+</style>
+</head>
+<body>
+<div class="wp">
+	<div class="view_head">
+		<div class="topbar">
+			<div class="crumbs">金币中心-任务配置-任务Tips配置</div>
+			<div class="toolbtns">
+				<span>|</span>
+				<a href="javascript:;" onclick="xbox_publish();return false;" >发布</a>
+				<span>|</span>
+				<a href="javascript:;" onclick="xman_refresh();return false;">刷新</a>
+				<a href="javascript:;" onclick="xman_backto();return false;">返回</a>
+			</div>
+		</div>
+	</div>
+	<div id="view_body">
+		<div id="view_content" class="view_content">
+			<form id="xbox_tasktips_form" action="/index.php?r=goldcenter/task/createtasktips" method="post">
+				<div class="task_tag">
+				<div class="tag_name"><span>任务提醒Tips：</span></div>
+					<div class="tag_options">
+						<span><input id="task_remind_tips_1" type="radio" name="task_remind_tips" value="1" {if $tasktips_info['task_remind_tips'] eq '1'} checked {/if}><label for="task_remind_tips_1">开</label></span>
+						<span><input id="task_remind_tips_2" type="radio" name="task_remind_tips" value="2" {if $tasktips_info['task_remind_tips'] eq '2'} checked {/if}><label for="task_remind_tips_2">关</label></span>
+					</div>
+				</div>
+				<div class="task_tag">
+				<div class="tag_name"><span>任务完成Tips：</span></div>
+					<div class="tag_options">
+						<span><input id="task_finish_tips_1" type="radio" name="task_finish_tips" value="1" {if $tasktips_info['task_finish_tips'] eq '1'} checked {/if}><label for="task_finish_tips_1">开</label></span>
+						<span><input id="task_finish_tips_2" type="radio" name="task_finish_tips" value="2" {if $tasktips_info['task_finish_tips'] eq '2'} checked {/if}><label for="task_finish_tips_2">关</label></span>
+					</div>
+				</div>
+				<div class="task_tag" fieldtips="填入的数字按分钟算，比如填入1，为一分钟">
+					<div class="tag_name"><span>多久弹出：</span></div>
+					<div class="tag_text">
+						<input type="text" id="how_long_pop_field" name="how_long_pop" value={$tasktips_info['how_long_pop']} maxlength="100"/>
+					</div>
+				</div>
+				<div class="task_tag" fieldtips="完成当天全部任务的奖励，填入1，为奖励1金币">
+					<div class="tag_name"><span>完成全部任务奖励：</span></div>
+					<div class="tag_text">
+						<input type="text" id="finish_all_awards_field" name="finish_all_awards" value={$tasktips_info['finish_all_awards']} maxlength="100"/>
+					</div>
+				</div>
+				<div class="task_opt">				
+					<div class="opt_btns">
+						<input type="button" id="task_save_btn" onclick="xbox_submit();" value="保存"/>
+						<input type="button" id="task_reset_btn" onclick="xbox_reset();" value="重置"/>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div id="view_foot"></div>
+</div>
+<div id="xman_form_field_tips" class="field_tips"></div>
+</body>
+<script type="text/javascript">
+{literal}
+var result_info = ['','任务Tips配置成功','任务Tips配置失败！'];
+var xman_backto = function(){
+	xman_redirect('/index.php?r=goldcenter/task/index');
+}
+
+var xbox_submit = function(){
+	var how_long_pop = document.getElementById("how_long_pop_field").value.trim();
+	if(how_long_pop == ''){
+		alert('请输入多久后弹出Tips');
+		return false;
+	}
+	var finish_all_awards = document.getElementById("finish_all_awards_field").value.trim();
+	if(finish_all_awards == ''){
+		alert('请输入全部任务完成后的奖励金币');
+		return false;
+	}
+	if(confirm("确定保存配置吗？")){
+		document.getElementById("xbox_tasktips_form").submit();
+	}
+}
+var xbox_publish = function(){
+	if(!confirm("确定要发布当前配置吗？")){
+		return false;
+	}
+	window.parent.window.xman_show_loading();
+	jQuery.ajax({
+		url:'/index.php?r=goldcenter/task/publishTaskTips',
+		type: 'GET',
+		dataType: 'json',
+		success: function(data){
+			window.parent.window.xman_hide_loading();
+			alert(data.info);
+			if(data.status){
+				xman_refresh();
+			}
+		}
+	});
+}
+var xbox_reset = function(){
+	window.location.href = window.location.href.replace(/&ts=\d+/, "&ts="+(new Date()).getTime());
+}
+jQuery("#view_content .task_tag").mouseover(function(){
+	var _this = this;
+	var pos = xbox_get_position(_this);
+	var fieldtips = _this.getAttribute("fieldtips");
+	if(fieldtips && fieldtips!=""){
+		jQuery("#xman_form_field_tips").text(fieldtips).css({top:pos.top-45,left:pos.left+150}).show();
+	}
+}).mouseout(function(){
+	jQuery("#xman_form_field_tips").hide();
+});
+{/literal}
+{if $result_code}
+alert(result_info[{$result_code}]);
+{/if}
+</script>
+</html>
